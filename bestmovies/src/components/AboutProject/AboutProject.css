@@ -1,0 +1,78 @@
+.about {
+    margin: 0 auto;
+}
+
+.about__section-title {
+    margin-top: 110px;
+    margin-bottom: 70px;
+    border-bottom: 1px #000000 solid;
+}
+
+.about__title {
+    margin: 0 auto 23px auto;
+}
+
+.about__list {
+    margin: 0;
+    padding: 0 0 110px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+}
+
+.about__item {
+    max-width: 550px;
+}
+
+.about__subtitle {
+    padding: 0 0 26px 0;
+    margin: 0;
+}
+
+.about__paragraph {
+    padding: 0;
+    margin: 0;
+}
+
+.about__progress {
+    text-align: center;
+    margin: 0;
+    padding: 0 0 110px 0;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    /*justify-content: space-between;*/
+    align-items: center;
+    list-style: none;
+}
+
+.about__progress-item {
+    margin: 0;
+}
+
+.about__progress-period {
+    margin: 0;
+    font-size: 14px;
+    line-height: 17px;
+    font-weight: 400;
+    padding: 9px 0;
+}
+
+li:first-child .about__progress-period {
+    background-color: #2BE080;
+}
+
+li:nth-child(2) .about__progress-period {
+    background-color: #F2F2F2;
+}
+
+.about__progress-label {
+    padding-top: 14px;
+    margin: 0;
+    font-size: 14px;
+    line-height: 17px;
+    font-weight: 500;
+    color: #A0A0A0;
+}
+
+

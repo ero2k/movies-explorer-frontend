@@ -1,0 +1,25 @@
+.nav {
+    background-color: black;
+    margin: 0;
+    padding: 24px;
+}
+
+.nav__list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+}
+
+.nav__item {
+    color: white;
+}
+
+.nav__link {
+    color: white;
+    margin-right: 40px;
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 500;
+}

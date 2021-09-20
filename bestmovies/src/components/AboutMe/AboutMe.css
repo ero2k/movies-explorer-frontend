@@ -1,0 +1,73 @@
+.aboutme {
+    margin: 0 auto;
+}
+
+.aboutme__section-title {
+    margin-top: 110px;
+    margin-bottom: 90px;
+    border-bottom: 1px #000000 solid;
+}
+
+.aboutme__section-description{
+    display: grid;
+    grid-template-columns: 600px 540px;
+}
+
+.aboutme__section-photo{
+    justify-self: end;
+}
+
+.aboutme__title {
+    margin: 0 auto 23px auto;
+}
+
+.aboutme__name {
+    margin: 0 auto 18px auto;
+}
+
+.aboutme__prof {
+    margin: 0 auto 26px auto;
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: 500;
+}
+
+.aboutme__description {
+    margin: 0;
+    line-height: 22px;
+}
+
+.aboutme__links-list{
+    list-style: none;
+    display: flex;
+    margin: 99px auto 0 auto;
+    padding: 0;
+}
+
+.aboutme__link{
+    margin-right: 20px;
+    font-size: 14px;
+    line-height: 17px;
+    font-weight: 500;
+}
+
+.aboutme__portfolio-title{
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: 400;
+    color: #A0A0A0;
+}
+
+.aboutme__portfolio-list{
+list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.aboutme__portfolio-link{
+font-size: 30px;
+    line-height: 50px;
+    font-weight: 400;
+    border-bottom: 1px black solid ;
+}
+

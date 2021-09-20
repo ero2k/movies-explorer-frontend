@@ -1,0 +1,16 @@
+
+.promo{
+    background-image: url(../../../src/images/main/promo/promo.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #073042;
+    padding-top: 184px;
+    padding-bottom: 224px;
+}
+
+.promo__title{
+    color: white;
+    max-width: 730px;
+    text-align: center;
+    margin: 0 auto;
+}

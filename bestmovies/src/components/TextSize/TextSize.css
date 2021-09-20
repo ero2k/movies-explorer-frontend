@@ -1,0 +1,21 @@
+.font-size_large{
+    font-size: 50px;
+    font-weight: 400;
+    line-height: 58px;
+}
+.font-size_title{
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 27px;
+}
+.font-size_subtitle{
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.font-size_paragraph{
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+}
