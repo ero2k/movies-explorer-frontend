@@ -8,12 +8,12 @@
     border-bottom: 1px #000000 solid;
 }
 
-.aboutme__section-description{
+.aboutme__section-description {
     display: grid;
     grid-template-columns: 600px 540px;
 }
 
-.aboutme__section-photo{
+.aboutme__section-photo {
     justify-self: end;
 }
 
@@ -37,37 +37,58 @@
     line-height: 22px;
 }
 
-.aboutme__links-list{
+.aboutme__links-list {
     list-style: none;
     display: flex;
     margin: 99px auto 0 auto;
     padding: 0;
 }
 
-.aboutme__link{
+.aboutme__link {
     margin-right: 20px;
     font-size: 14px;
     line-height: 17px;
     font-weight: 500;
 }
 
-.aboutme__portfolio-title{
+.aboutme__portfolio {
+margin-bottom: 125px;
+}
+
+.aboutme__portfolio-title {
     font-size: 18px;
     line-height: 20px;
     font-weight: 400;
     color: #A0A0A0;
 }
 
-.aboutme__portfolio-list{
-list-style: none;
+.aboutme__portfolio-list {
+    list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.aboutme__portfolio-link{
-font-size: 30px;
+.aboutme__portfolio-item {
+    font-size: 30px;
+    padding-bottom: 19px;
     line-height: 50px;
     font-weight: 400;
-    border-bottom: 1px black solid ;
+    border-bottom: 1px #E8E8E8 solid;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.aboutme__portfolio-item::after {
+    content: "";
+    background: white url(../../../src/images/main/aboutme/arrow.svg) no-repeat center;
+    width: 29px;
+    height: 29px;
+    display: inline-block;
+}
+
+.aboutme__portfolio-link{
+    text-decoration: none;
+    color: black;
 }
 
