@@ -2,11 +2,13 @@
     font-size: 50px;
     font-weight: 400;
     line-height: 58px;
+    letter-spacing: -2px;
 }
 .font-size_title{
     font-size: 22px;
     font-weight: 400;
     line-height: 27px;
+    letter-spacing: -.8px;
 }
 .font-size_subtitle{
     font-size: 20px;
@@ -18,4 +20,45 @@
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
+    letter-spacing: -.6px;
 }
+
+@media screen and (max-width: 768px){
+    .font-size_paragraph{
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 18px;
+        letter-spacing: -.6px;
+    }
+
+}
+
+@media screen and (max-width: 320px){
+    .font-size_title{
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 22px;
+        letter-spacing: -.8px;
+    }
+
+    .font-size_subtitle{
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 22px;
+    }
+
+    .font-size_paragraph{
+        font-size: 11px;
+        font-weight: 400;
+        line-height: 16px;
+        letter-spacing: -.6px;
+    }
+
+    .font-size_large{
+        font-size: 30px;
+        font-weight: 400;
+        line-height: 36px;
+        letter-spacing: -1px;
+    }
+}
+

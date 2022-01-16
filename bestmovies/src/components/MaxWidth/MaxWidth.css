@@ -1,3 +1,17 @@
 .max-width {
     max-width: 1140px;
 }
+
+@media screen  and (max-width: 768px){
+    .max-width {
+        max-width: 668px;
+    }
+}
+
+@media screen  and (max-width: 320px){
+    .max-width {
+        max-width: 300px;
+    }
+}
+
+

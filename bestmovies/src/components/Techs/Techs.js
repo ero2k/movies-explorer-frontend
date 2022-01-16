@@ -4,7 +4,7 @@ import "./Techs.css"
 
 function Techs() {
     return (
-        <section className="techs">
+        <section id="techs" className="techs">
             <div className="techs__section-title max-width">
                 <h2 className="techs__title font-size_title">Технологии</h2>
             </div>

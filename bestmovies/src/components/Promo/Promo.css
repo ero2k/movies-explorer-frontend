@@ -1,16 +1,40 @@
 
-.promo{
+.promo {
     background-image: url(../../../src/images/main/promo/promo.svg);
     background-repeat: no-repeat;
     background-position: center;
     background-color: #073042;
-    padding-top: 184px;
+    background-position-y: 80px;
+    padding-top: 180px;
     padding-bottom: 224px;
 }
 
-.promo__title{
+.promo__title {
     color: white;
     max-width: 730px;
     text-align: center;
     margin: 0 auto;
+    letter-spacing: -2px;
+}
+
+@media screen and (max-width: 768px) {
+    .promo {
+        padding: 322px 19px 342px 19px;
+        background-position-y: 219px;
+
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .promo {
+        padding: 207px 10px 242px 10px;
+        background-position-y: 142px;
+        background-size: 76%;
+    }
+
+    .promo__title {
+        font-size: 31px;
+        line-height: 39px;
+        letter-spacing: -1px;
+    }
 }

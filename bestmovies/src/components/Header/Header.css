@@ -1,34 +1,132 @@
-.header{
+.header {
     background-color: #073042;
-    padding: 0 70px;
+    padding: 18px 70px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.auth__enter{
+.background-white {
+    background-color: white;
+}
+
+.hidden{
+    display: none;
+}
+
+.header__logo {
+    margin-left: 17px;
+    width: 26px;
+    height: 30px;
+    background: #F9F9F9 url("../../../src/images/header/icon-acc.svg") no-repeat center;
+    border-radius: 4px;
+}
+
+.header__movie-link {
+    text-decoration: none;
+    color: black;
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 400;
+    margin-right: 16px;
+}
+
+.header__movie-link:last-child {
+    margin: 0;
+}
+
+.header__link_active {
+    font-weight: 500;
+}
+
+.header__acc {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+}
+
+.header__section-movie {
+    margin-top: -5px;
+    margin-right: -63px;
+}
+
+.auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -6px;
+}
+
+.auth__enter {
     margin-left: 30px;
-    text-decoration:none;
-    text-align:center;
-    padding:8px 20px;
-    -webkit-border-radius:4px;
-    -moz-border-radius:4px;
+    text-decoration: none;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 76px;
+    height: 32px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
     border-radius: 4px;
     font-size: 12px;
     line-height: 16px;
-    font-weight:500;
-    color:#000000;
-    background:#2be07f;
+    font-weight: 500;
+    color: #000000;
+    background: #2be07f;
+
+    opacity: 1;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    transition: all 0.5s ease;
 }
 
-.auth__reg{
-    text-decoration:none;
-    font-weight:500;
+.auth__enter:hover {
+    opacity: 0.5;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.auth__reg {
+    text-decoration: none;
+    font-weight: 500;
     font-size: 12px;
     line-height: 16px;
     color: white;
+
+    -webkit-transition: all 1s ease;
+    transition: all 1s ease;
 }
 
-.logo{
-    margin: 18px auto;
+.auth__reg:hover {
+    color: grey;
 }
+
+@media screen and (max-width: 768px){
+    .header{
+        padding:18px 30px;
+    }
+}
+
+@media screen and (max-width: 320px){
+    .header{
+        padding:18px 14px;
+    }
+    .auth__enter{
+        margin-left: 14px;
+        width: 54px;
+        height: 26px;
+        font-size: 10px;
+    }
+
+    .auth__reg {
+        font-size: 10px;
+    }
+}
+

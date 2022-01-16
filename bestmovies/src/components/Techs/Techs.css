@@ -1,39 +1,41 @@
-.techs{
+.techs {
     margin: 0 auto;
     background-color: #F5F5F5;
+    padding-top: 102px;
 }
 
-.techs__section-title{
-    padding-top:100px;
+.techs__section-title {
+
     margin: 0 auto 70px auto;
     border-bottom: 1px #000000 solid;
 }
 
 .techs__title {
     margin: 0 auto 23px auto;
+    letter-spacing: -.8px;
 }
 
-.techs__section-subtitle{
+.techs__section-subtitle {
     margin: 90px auto 0 auto;
     text-align: center;
 }
 
-.techs__subtitle{
+.techs__subtitle {
     max-width: 600px;
     margin: 0 auto 26px auto;
 }
 
-.techs__paragraph{
-    max-width:460px;
+.techs__paragraph {
+    max-width: 460px;
     margin: 0 auto;
 }
 
-.techs__section-technologies{
-    margin-top:100px;
+.techs__section-technologies {
+    margin-top: 100px;
     padding-bottom: 100px;
 }
 
-.techs__section-list{
+.techs__section-list {
     list-style: none;
     display: flex;
     justify-content: center;
@@ -41,17 +43,94 @@
     margin: 0 auto;
 }
 
-.techs__section-item{
-    margin-left: 30px;
-    text-decoration:none;
-    text-align:center;
+
+.techs__section-item {
+    letter-spacing: -0.7px;
+    margin-right: 10px;
+    text-decoration: none;
+    text-align: center;
     font-size: 14px;
     line-height: 17px;
     font-weight: 400;
-    padding:21px 26px;
-    -webkit-border-radius:10px;
-    -moz-border-radius:10px;
+    width: 90px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
     border-radius: 10px;
-    color:#000000;
-    background:#E8E8E8;
+    color: #000000;
+    background: #E8E8E8;
 }
+
+.techs__section-item:nth-last-child(1) {
+    margin-right: 0;
+}
+
+@media screen and (max-width: 768px) {
+    .techs {
+        padding-top: 0;
+    }
+
+    .techs__section-title {
+        padding-top: 92px;
+    }
+
+    .techs__section-subtitle {
+        margin: 79px auto 0 auto;
+    }
+
+    .techs__paragraph {
+        letter-spacing: -.45px;
+    }
+
+    .techs__subtitle {
+        margin: 0 auto 22px auto;
+    }
+
+    .techs__section-technologies {
+        margin-top: 82px;
+        padding-bottom: 90px;
+    }
+
+    .techs__section-item {
+        width: 84px;
+        height: 57px;
+        font-size: 12px;
+        line-height: 15px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .techs {
+        padding: 0 14px;
+        background-color: white;
+    }
+
+    .techs__section-title {
+        padding-top: 66px;
+        margin: 0 auto;
+    }
+
+    .techs__section-subtitle {
+        margin: 62px auto 0 auto;
+    }
+
+    .techs__section-list {
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-gap: 10px;
+    }
+
+
+    .techs__section-technologies {
+        margin-top: 51px;
+        padding-bottom: 50px;
+    }
+
+    .techs__section-item {
+        margin: 0;
+    }
+}
+

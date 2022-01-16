@@ -2,9 +2,9 @@ import React from "react";
 import "./AboutProject.css"
 
 
-function AboutProject(props) {
+function AboutProject() {
     return (
-        <section className="about max-width">
+        <section id="about-project" className="about max-width">
             <div className="about__section-title">
                 <h2 className="about__title font-size_title">О проекте</h2>
             </div>

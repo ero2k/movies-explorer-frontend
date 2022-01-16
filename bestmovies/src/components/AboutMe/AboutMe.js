@@ -6,7 +6,7 @@ import photo from "../../images/main/aboutme/photo.png";
 
 function AboutMe(props) {
     return (
-        <section className="aboutme max-width">
+        <section id="about-me" className="aboutme max-width">
             <div className="aboutme__section-title">
                 <h2 className="aboutme__title font-size_title">Студент</h2>
             </div>
@@ -23,13 +23,18 @@ function AboutMe(props) {
                         фриланс-заказами и ушёл с постоянной работы.</p>
                     <div className="aboutme__links">
                         <ul className="aboutme__links-list">
-                            <li className="aboutme__link">Facebook</li>
-                            <li className="aboutme__link">Github</li>
+                            <li className="aboutme__item">
+                            <Link to="##" className="aboutme__link">Facebook</Link>
+                            </li>
+                            <li className="aboutme__item">
+                            <Link to="##" className="aboutme__link">Github</Link>
+                            </li>
+
                         </ul>
                     </div>
                 </div>
                 <div className="aboutme__section-photo">
-                    <img src={photo} alt="Фото студента"/>
+                    <img className="aboutme__photo" src={photo} alt="Фото студента"/>
                 </div>
             </div>
             <div className="aboutme__portfolio">

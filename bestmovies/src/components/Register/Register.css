@@ -1,0 +1,117 @@
+.register {
+    margin: 70px auto 0 auto;
+    max-width: 396px;
+}
+
+.register__form {
+
+}
+
+.register__title {
+    margin: 38px auto;
+    font-size: 24px;
+    line-height: 29px;
+    font-weight: 500;
+}
+
+.register__form {
+    display: flex;
+    flex-direction: column;
+}
+
+.register__label {
+    display: flex;
+    flex-direction: column;
+    font-size: 10px;
+    line-height: 12px;
+    font-weight: 400;
+    color: #A0A0A0;
+    position: relative;
+
+}
+
+.register__input {
+    margin: 10px 0 20px 0;
+    padding: 15px;
+    background-color: #F9F9F9;
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 400;
+    border-radius: 8px;
+    border: none;
+}
+
+.register__error {
+    font-size: 10px;
+    line-height: 12px;
+    font-weight: 400;
+    color: #FF3055;
+    position: absolute;
+    bottom: calc(100% - 88px)
+}
+
+.register__btn-submit {
+    width: 100%;
+    min-height: 45px;
+    background-color: #3456F3;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    margin: 69px 0 16px 0;
+    font-size: 14px;
+    line-height: 17px;
+    font-weight: 500;
+}
+
+.register__paragraph {
+    margin: 0 auto;
+    padding: 0;
+    font-size: 14px;
+    line-height: 17px;
+    font-weight: 400;
+    color: #A0A0A0;
+    text-align: center;
+}
+
+.register__btn-login {
+    text-decoration: none;
+    color: #3456F3;
+    margin-left: 6px;
+}
+
+@media screen and (max-width: 768px) {
+    .register {
+        margin: 232px auto 0 auto;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .register {
+        margin: 56px auto 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .register__title {
+        margin: 50px auto 80px auto;
+        font-size: 24px;
+        line-height: 29px;
+        font-weight: 500;
+    }
+
+    .register__form {
+        min-width: 260px;
+    }
+
+    .register__btn-submit {
+        margin: 159px 0 13px 0;
+        font-size: 12px;
+    }
+
+    .register__paragraph {
+        font-size: 12px;
+    }
+}
+
