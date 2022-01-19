@@ -2,15 +2,16 @@ import React from "react";
 import './Header.css';
 import {Link, Route, Switch, NavLink} from "react-router-dom";
 import logo from "../../images/header/logo.svg";
+import burger from "../../images/main/menu/icon-burger.png";
 
 function Header(props) {
     const currentPathname = document.location.pathname
-    const headerWhitePath = ['/movies' , '/favorite-movies', '/profile']
-    const headerClass =  headerWhitePath.indexOf(currentPathname) >= 0 ? "header background-white" : "header hidden"
+    const headerWhitePath = ['/movies', '/favorite-movies', '/profile']
+    const headerClass = headerWhitePath.indexOf(currentPathname) >= 0 ? "header background-white" : "header hidden"
 
-    console.log( document.location.pathname)
+    console.log(document.location.pathname)
 
-    console.log( headerWhitePath.indexOf(currentPathname) >= 0)
+    console.log(headerWhitePath.indexOf(currentPathname) >= 0)
 
     return (
         <Switch>
@@ -27,16 +28,30 @@ function Header(props) {
             </Route>
 
             <Route path='/*'>
-                <header className={headerClass }>
+                <header className={headerClass}>
                     <Link to="/movies" target="_self">
                         <img src={logo} alt="Логотип" className="logo"/>
                     </Link>
                     <nav className="header__section-movie">
-                        <NavLink className="header__movie-link" activeClassName="header__link_active" exact to="movies">Фильмы</NavLink>
-                        <NavLink className="header__movie-link" activeClassName="header__link_active" to="favorite-movies">Сохранённые фильмы</NavLink>
+                        <ul className="header__links">
+                            <li className="header__link">
+                                <NavLink className="header__movie-link" activeClassName="header__link_active" exact
+                                         to="movies">Фильмы</NavLink>
+                            </li>
+                            <li className="header__link">
+                                <NavLink className="header__movie-link" activeClassName="header__link_active"
+                                         to="favorite-movies">Сохранённые фильмы</NavLink>
+                            </li>
+                        </ul>
                     </nav>
                     <div className="auth">
-                        <Link to="##" className="header__acc">Аккаунт<div className="header__logo"></div></Link>
+                        <Link to="##" className="header__acc">Аккаунт
+                            <div className="header__logo"></div>
+                        </Link>
+                        <img src={burger} className="header__menu-burger" alt=""/>
+                        {/*<div className="header__menu-burger">*/}
+                        {/*    <span></span>*/}
+                        {/*</div>*/}
                     </div>
                 </header>
             </Route>
