@@ -42,7 +42,7 @@ function App() {
                 </Route>
             </Switch>
             <Menu/>
-            <Footer/>
+            <Footer />
         </div>
     );
 }

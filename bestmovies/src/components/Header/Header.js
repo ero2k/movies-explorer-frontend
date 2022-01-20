@@ -27,7 +27,7 @@ function Header(props) {
             </Route>
 
             <Route path='/*'>
-                <header className={headerClass }>
+                <header className={headerClass}>
                     <Link to="/movies" target="_self">
                         <img src={logo} alt="Логотип" className="logo"/>
                     </Link>
