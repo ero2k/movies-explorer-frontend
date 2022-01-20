@@ -2,11 +2,15 @@ import React from "react";
 import './Menu.css';
 import {Link, Route, Switch, NavLink} from "react-router-dom";
 import logo from "../../images/header/logo.svg";
+import closeIcon from "../../images/main/menu/icon-close.png"
 
 function Menu(props) {
 
     return (
-        <div className="menu">
+        <div className="menu">/
+            <button type="button" className="menu__button-close" onClick={props.onClose}>
+                <img src={closeIcon} className="menu__close-image" alt="Закрыть"/>
+            </button>
             <nav className="menu__navigation">
                 <ul className="menu__links">
                     <li className="menu__item">

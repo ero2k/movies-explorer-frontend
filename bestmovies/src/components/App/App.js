@@ -15,9 +15,20 @@ import Menu from "../Menu/Menu";
 
 
 function App() {
+    const [isCloseMenu, setCloseMenu] = React.useState(false)
+    // const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false)
+
+    const closeMenu = () => {
+        setCloseMenu(false)
+    }
+    const openMenu = () => {
+        setCloseMenu(false)
+    }
+
+
     return (
         <div className="page">
-            <Header/>
+            <Header onOpen={openMenu}/>
             <Switch>
                 <Route exact path="/">
                     <Main/>
@@ -41,7 +52,7 @@ function App() {
                     <NotFound/>
                 </Route>
             </Switch>
-            {/*<Menu/>*/}
+            <Menu onClose={closeMenu} isClose={isCloseMenu}/>
             <Footer/>
         </div>
     );
