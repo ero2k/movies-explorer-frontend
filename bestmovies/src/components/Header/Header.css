@@ -67,8 +67,10 @@
     margin-right: -75px;
 }
 
-.header__menu-burger{
+.menu-burger{
     display: none;
+    padding: 0;
+    margin: 0;
 }
 
 .auth {
@@ -102,6 +104,12 @@
     transition: all 0.5s ease;
 }
 
+.button__menu-burger{
+    border: none;
+    box-shadow: none;
+    background: none;
+}
+
 .auth__enter:hover {
     opacity: 0.5;
     -webkit-transition: all 0.5s ease;
@@ -133,11 +141,11 @@
         display: none;
     }
 
-    .auth{
-        display: block;
-    }
+    /*.auth{*/
+    /*    display: block;*/
+    /*}*/
 
-    .header__menu-burger{
+    .menu-burger{
         display: block;
     }
 

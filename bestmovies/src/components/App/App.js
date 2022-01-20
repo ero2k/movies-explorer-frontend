@@ -16,13 +16,12 @@ import Menu from "../Menu/Menu";
 
 function App() {
     const [isCloseMenu, setCloseMenu] = React.useState(false)
-    // const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false)
 
     const closeMenu = () => {
         setCloseMenu(false)
     }
     const openMenu = () => {
-        setCloseMenu(false)
+        setCloseMenu(true)
     }
 
 

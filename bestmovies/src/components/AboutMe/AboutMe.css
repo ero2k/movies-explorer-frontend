@@ -47,13 +47,13 @@
 }
 
 .aboutme__links {
-    margin-top: 98px;
+    margin-top: 178px;
 }
 
 .aboutme__links-list {
     list-style: none;
     display: flex;
-margin: 0;
+    margin: 0;
     padding: 0;
 }
 
@@ -200,12 +200,15 @@ margin: 0;
     .aboutme__section-description {
         flex-direction: column;
     }
-    .aboutme__student{
+
+    .aboutme__student {
         order: 2;
     }
-    .aboutme__section-photo{
+
+    .aboutme__section-photo {
         order: 1;
     }
+
     .aboutme__photo {
         max-width: 292px;
         margin-bottom: 37px;
@@ -246,6 +249,7 @@ margin: 0;
         font-size: 14px;
         margin: 0 auto 23px auto;
     }
+
     .aboutme__section-description {
         margin-bottom: 68px;
     }

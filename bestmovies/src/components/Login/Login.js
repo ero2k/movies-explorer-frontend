@@ -7,7 +7,9 @@ import {Link} from "react-router-dom";
 function Login() {
     return (
         <section className="login">
-            <img src={logo} alt="Логотип" className="logo"/>
+            <Link to="/" target="_self">
+                <img src={logo} alt="Логотип" className="logo"/>
+            </Link>
             <h1 className="login__title">Рады видеть!</h1>
             <form action="submit" className="login__form">
                 <label className="login__label">E-mail
