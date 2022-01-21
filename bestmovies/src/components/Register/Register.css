@@ -47,7 +47,12 @@
     font-weight: 400;
     color: #FF3055;
     position: absolute;
-    bottom: calc(100% - 88px)
+    bottom: calc(100% - 88px);
+    visibility: hidden;
+}
+
+.register__error-visible {
+    visibility: visible;
 }
 
 .register__btn-submit {

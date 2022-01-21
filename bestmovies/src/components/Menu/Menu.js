@@ -1,6 +1,6 @@
 import React from "react";
 import './Menu.css';
-import {Link, Route, Switch, NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import closeIcon from "../../images/main/menu/icon-close.png"
 
 function Menu(props) {
@@ -21,7 +21,7 @@ function Menu(props) {
                         <NavLink className="menu__link" activeClassName="menu__link_active" exact to="/movies">Фильмы</NavLink>
                     </li>
                     <li className="menu__item">
-                        <NavLink className="menu__link" activeClassName="menu__link_active" exact to="/favorite-movies">Сохранённые фильмы</NavLink>
+                        <NavLink className="menu__link" activeClassName="menu__link_active" exact to="/saved-movies">Сохранённые фильмы</NavLink>
                     </li>
                     <li className="menu__item">
                         <NavLink className="menu__link" activeClassName="menu__link_active" exact to="/profile">Аккаунт<div className="header__logo"></div></NavLink>
