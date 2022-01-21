@@ -24,7 +24,6 @@
 
 .aboutme__title {
     margin: 0 auto 23px auto;
-
 }
 
 .aboutme__name {
@@ -131,7 +130,6 @@
 
 @media screen  and (max-width: 768px) {
     .aboutme {
-        /*max-width: 292px;*/
         padding: 92px 0 131px 0;
     }
 
