@@ -7,7 +7,9 @@ import {Link} from "react-router-dom";
 function Register() {
     return (
         <section className="register">
-            <img src={logo} alt="Логотип" className="logo"/>
+            <Link to="/" target="_self">
+                <img src={logo} alt="Логотип" className="logo"/>
+            </Link>
             <h1 className="register__title">Добро пожаловать!</h1>
             <form action="submit" className="register__form">
                 <label className="register__label">Имя

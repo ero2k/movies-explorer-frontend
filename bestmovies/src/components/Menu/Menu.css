@@ -1,4 +1,4 @@
-.menu{
+.menu {
     position: fixed;
     width: 100%;
     top: 0;
@@ -7,9 +7,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    visibility: hidden;
 }
 
-.menu:before{
+.menu-open{
+    visibility: visible;
+}
+
+.menu:before {
     position: absolute;
     content: "";
     background-color: black;
@@ -19,7 +24,7 @@
     z-index: 0;
 }
 
-.menu__navigation{
+.menu__navigation {
     background-color: white;
     position: absolute;
     top: 0;
@@ -29,7 +34,7 @@
     height: 100%;
 }
 
-.menu__links{
+.menu__links {
     list-style: none;
     margin: 0;
     display: flex;
@@ -39,15 +44,15 @@
     padding: 159px 90px 0 90px;
 }
 
-.menu__item{
+.menu__item {
     margin-bottom: 28px;
     font-size: 18px;
     line-height: 22px;
     font-weight: 500;
 }
 
-.menu__item:last-child{
-    margin: 0 0 92px 0 ;
+.menu__item:last-child {
+    margin: 0 0 92px 0;
     position: absolute;
     bottom: 0;
     font-size: 14px;
@@ -56,8 +61,8 @@
 
 }
 
-.menu__link{
-text-decoration: none;
+.menu__link {
+    text-decoration: none;
     color: #000;
     display: flex;
     justify-content: center;
@@ -65,16 +70,35 @@ text-decoration: none;
 
 }
 
+.menu__button-close {
+    position: absolute;
+    z-index: 1;
+    border: none;
+    box-shadow: none;
+    background: none;
+    top: 21px;
+    right: 16px;
+}
+
+.menu__link_active {
+    border-bottom: 2px black solid;
+}
+
+
+.menu__button-close:hover {
+    cursor: pointer;
+}
+
 @media screen and (max-width: 320px) {
-    .menu__links{
+    .menu__links {
         padding: 145px 0 0 0;
     }
 
-    .menu__item{
+    .menu__item {
         margin-bottom: 24px;
     }
 
-    .menu__item:last-child{
-        margin: 0 0 48px 0 ;
+    .menu__item:last-child {
+        margin: 0 0 48px 0;
     }
 }
