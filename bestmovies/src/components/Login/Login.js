@@ -17,7 +17,7 @@ function Login() {
                     <span className="login__error"></span></label>
                 <label className="login__label">Пароль
                     <input type="password" className="login__input" />
-                    <span className="login__error login__error-visible">Что то пошло не так</span></label>
+                    <span className="login__error login__error-visible">Что-то пошло не так</span></label>
                 <button type="submit" className="login__btn-submit">Войти</button>
             </form>
             <p className="login__paragraph">Ещё не зарегистрированы?<Link to="/signup" className="login__btn-login">Регистрация</Link></p>

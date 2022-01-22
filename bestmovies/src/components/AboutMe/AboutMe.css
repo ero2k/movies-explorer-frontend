@@ -20,6 +20,7 @@
 
 .aboutme__photo {
     max-width: 270px;
+    border-radius: 20px;
 }
 
 .aboutme__title {

@@ -5,6 +5,7 @@ import Main from "../Main/Main"
 import Header from "../Header/Header"
 import Footer from "../Footer/Footer";
 import Movies from "../Movies/Movies";
+import Preloader from "../Preloader/Preloader";
 import {Route, Switch} from 'react-router-dom';
 import SavedMovies from "../SavedMovies/SavedMovies";
 import Profile from "../Profile/Profile";
@@ -16,6 +17,7 @@ import Menu from "../Menu/Menu";
 
 function App() {
     const [isCloseMenu, setCloseMenu] = React.useState(false)
+    const [isOpenPreloader, setOpenPreloader] = React.useState(false)
 
     const closeMenu = () => {
         setCloseMenu(false)
@@ -51,6 +53,7 @@ function App() {
                     <NotFound/>
                 </Route>
             </Switch>
+            <Preloader isOpen={isOpenPreloader}/>
             <Menu onClose={closeMenu} isClose={isCloseMenu}/>
             <Footer/>
         </div>
