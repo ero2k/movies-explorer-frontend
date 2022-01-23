@@ -1,3 +1,5 @@
+const URL_MOVIES = "https://api.nomoreparties.co/beatfilm-movies"
+
 const burgerMenuCheckbox = document.querySelector('.page')
 
 const initialCards = [{
@@ -134,6 +136,8 @@ const savedCards = [{
         time: '100'
     },]
 
+export  default URL_MOVIES
+
 export {
-    initialCards, savedCards, burgerMenuCheckbox
+    savedCards, burgerMenuCheckbox, URL_MOVIES,
 }
