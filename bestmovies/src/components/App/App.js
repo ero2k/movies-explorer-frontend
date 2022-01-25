@@ -13,11 +13,32 @@ import Register from "../Register/Register";
 import Login from "../Login/Login";
 import NotFound from "../NotFound/NotFound";
 import Menu from "../Menu/Menu";
+import { useState, useEffect } from 'react';
 
 
 function App() {
     const [isCloseMenu, setCloseMenu] = React.useState(false)
     const [isOpenPreloader, setOpenPreloader] = React.useState(false)
+
+    // function getWindowDimensions() {
+    //     const { innerWidth: width} = window;
+    //     return {
+    //         width
+    //     };
+    // }
+    //
+    // function useWindowDimensions() {
+    //     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+    //     useEffect(() => {
+    //         function handleResize() {
+    //             setWindowDimensions(getWindowDimensions());
+    //         }
+    //         window.addEventListener('resize', handleResize);
+    //         return () => window.removeEventListener('resize', handleResize);
+    //     }, []);
+    //     return windowDimensions;
+    // }
+
 
     const closeMenu = () => {
         setCloseMenu(false)
@@ -35,7 +56,8 @@ function App() {
                     <Main/>
                 </Route>
                 <Route path="/movies">
-                    <Movies/>
+                    {/*<Movies size={useWindowDimensions()}/>*/}
+                    <Movies/>}/>
                 </Route>
                 <Route path="/saved-movies">
                     <SavedMovies/>
