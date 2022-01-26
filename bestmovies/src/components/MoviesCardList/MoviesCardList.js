@@ -1,27 +1,38 @@
 import React from "react";
 import "./MoviesCardList.css"
 import MoviesCard from "../MoviesCard/MoviesCard";
+import {useEffect} from "react";
 import {LOADED_MOVIES} from "../../utils/constants";
 
-const MoviesCardList = React.memo ((props) => {
-    // const [moviesToShow, setMoviesToShow] = React.useState()
+function MoviesCardList(props) {
+    const [moviesToShow, setMoviesToShow] = React.useState([])
+    const tes = Object.values(props.cards).slice(0, 5)
 
-    console.log('MoviesCardList', props.size.width)
-    console.log('MoviesCardList', props.schemeDevice)
+    useEffect(() => {
+            if (tes.length > 0) {
+                setMoviesToShow(tes)
+                console.log('tes')
+            }
+            console.log('tes1')
+        },[]
+    )
+
+    console.log('MoviesCardList', moviesToShow)
+    console.log('MoviesCardList', tes)
 
     return (
         <section className="movies-list__section max-width">
             <ul className="movies-list__list">
                 {
-                    props.cards.map((card) => (
+                    moviesToShow.map((card) => (
                         <MoviesCard key={card.id} card={card} onCardLike={props.onCardLike}
-                              onCardDelete={props.onCardDelete}/>
+                                    onCardDelete={props.onCardDelete}/>
                     ))
                 }
             </ul>
             <button className="movies-list__button">Ещё</button>
         </section>
     )
-})
+}
 
 export default MoviesCardList;
