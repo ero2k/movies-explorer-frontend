@@ -57,7 +57,7 @@ function App() {
                 </Route>
                 <Route path="/movies">
                     {/*<Movies size={useWindowDimensions()}/>*/}
-                    <Movies/>}/>
+                    <Movies/>
                 </Route>
                 <Route path="/saved-movies">
                     <SavedMovies/>

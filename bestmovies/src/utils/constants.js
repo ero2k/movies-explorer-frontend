@@ -156,5 +156,5 @@ const savedCards = [{
 export default URL_MOVIES
 
 export {
-    savedCards, burgerMenuCheckbox, URL_MOVIES,
+    savedCards, burgerMenuCheckbox, URL_MOVIES, LOADED_MOVIES
 }
