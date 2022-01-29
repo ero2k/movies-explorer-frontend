@@ -4,7 +4,7 @@ import {useState, useEffect} from 'react';
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList"
 import {LOADED_MOVIES} from "../../utils/constants";
-import api from "../../utils/MoviesApi";
+import apiMovies from "../../utils/MoviesApi";
 
 function Movies() {
     const [moviesArray, setMoviesArray] = React.useState([])
@@ -28,12 +28,21 @@ function Movies() {
     async function handleMoviesArray(e) {
         e.preventDefault()
         try {
-            const movies = await api.getInitialCards()
-            setMoviesArray(movies)
+            const movies = await apiMovies.getInitialCards()
+            await localStorage.setItem('movies', JSON.stringify(movies) )
+            setMoviesArray(JSON.parse(localStorage.getItem('movies')))
         } catch (error) {
             console.log(error)
         }
     }
+
+    useEffect(()=>{
+        if(!!localStorage.movies){
+            setMoviesArray(JSON.parse(localStorage.getItem('movies')))
+        }
+    },[])
+
+    console.log(localStorage.movies)
 
     function getWindowDimensions() {
         const {innerWidth: width} = window;

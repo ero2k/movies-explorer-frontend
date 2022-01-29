@@ -29,7 +29,9 @@
     font-weight: 500;
     background-color: #F9F9F9;
 }
-
+.movies-list__button-hidden{
+    display: none;
+}
 
 @media screen and (max-width: 768px) {
     .movies-list__section {

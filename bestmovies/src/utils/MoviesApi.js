@@ -21,18 +21,20 @@ class Api {
             }
             return Promise.reject(`Ошибка: ${res.status}`);
         })
-
     }
 
     getInitialCards() {
         return this._fetchRequest('/')
     }
 
+    likedMovie(){
+        return this._fetchRequest('/')
+    }
 }
 
-const api = new Api({
+const apiMovies = new Api({
     baseUrl: URL_MOVIES,
 });
 
 
-export default api;
+export default apiMovies;

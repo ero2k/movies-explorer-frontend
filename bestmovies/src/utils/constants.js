@@ -1,9 +1,10 @@
 const URL_MOVIES = "https://api.nomoreparties.co/beatfilm-movies"
+const URL_LOCALDB = "https://api.nomoreparties.co/beatfilm-movies"
 const LOADED_MOVIES = {
     'desktop': {
         'totalCards': 12,
         'columns': 3,
-        'download': 3
+        'download': 4
     },
     'tablet': {
         'totalCards': 8,

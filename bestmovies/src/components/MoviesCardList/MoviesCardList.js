@@ -1,24 +1,22 @@
 import React from "react";
 import "./MoviesCardList.css"
 import MoviesCard from "../MoviesCard/MoviesCard";
-import {useEffect} from "react";
-import {LOADED_MOVIES} from "../../utils/constants";
+import {useEffect, useState} from "react";
 
 function MoviesCardList(props) {
-    const [moviesToShow, setMoviesToShow] = React.useState([])
-    const tes = Object.values(props.cards).slice(0, 5)
+    const [moviesToShow, setMoviesToShow] = useState([])
+    const classButtonMore = props.cards.length > 0 || props.cards.length > moviesToShow.length ? "movies-list__button" : "movies-list__button movies-list__button-hidden"
+
+    console.log(moviesToShow)
 
     useEffect(() => {
-            if (tes.length > 0) {
-                setMoviesToShow(tes)
-                console.log('tes')
-            }
-            console.log('tes1')
-        },[]
-    )
+        setMoviesToShow(Object.values(props.cards).slice(0, props.schemeDevice.totalCards))
+    }, [props.cards, props.schemeDevice.totalCards])
 
-    console.log('MoviesCardList', moviesToShow)
-    console.log('MoviesCardList', tes)
+    function addMoreMovies() {
+        const totalMoviesToShow = moviesToShow.length + props.schemeDevice.download
+        setMoviesToShow(Object.values(props.cards).slice(0, totalMoviesToShow))
+    }
 
     return (
         <section className="movies-list__section max-width">
@@ -30,7 +28,7 @@ function MoviesCardList(props) {
                     ))
                 }
             </ul>
-            <button className="movies-list__button">Ещё</button>
+            <button onClick={addMoreMovies} className={classButtonMore}>Ещё</button>
         </section>
     )
 }
