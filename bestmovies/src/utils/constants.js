@@ -1,5 +1,5 @@
-const URL_MOVIES = "https://api.nomoreparties.co/beatfilm-movies"
-const URL_LOCALDB = "https://api.nomoreparties.co/beatfilm-movies"
+export const URL_MOVIES = "https://api.nomoreparties.co/beatfilm-movies"
+export const URL_LOCALDB = "https://api.bestmovies.nomoredomains.monster"
 const LOADED_MOVIES = {
     'desktop': {
         'totalCards': 12,
@@ -19,103 +19,6 @@ const LOADED_MOVIES = {
 }
 
 const burgerMenuCheckbox = document.querySelector('.page')
-
-const initialCards = [{
-    _id: 6,
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg',
-    time: '162'
-},
-    {
-        _id: 1,
-        name: 'Челябинская область Челябинская областьЧелябинская ',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg',
-        time: '86'
-    },
-    {
-        _id: 2,
-        name: 'Иваново',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg',
-        time: '162'
-    },
-    {
-        _id: 3,
-        name: 'Камчатка',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg',
-        time: '162'
-    },
-    {
-        _id: 4,
-        name: 'Холмогорский район',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg',
-        time: '100'
-    },
-    {
-        _id: 5,
-        name: 'Байкал',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg',
-        time: '100'
-    },
-    {
-        _id: 6,
-        name: 'Архыз',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg',
-        time: '162'
-    },
-    {
-        _id: 1,
-        name: 'Челябинская область Челябинская областьЧелябинская ',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg',
-        time: '86'
-    },
-    {
-        _id: 2,
-        name: 'Иваново',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg',
-        time: '162'
-    },
-    {
-        _id: 3,
-        name: 'Камчатка',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg',
-        time: '162'
-    },
-    {
-        _id: 4,
-        name: 'Холмогорский район',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg',
-        time: '100'
-    },
-    {
-        _id: 5,
-        name: 'Байкал',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg',
-        time: '100'
-    }, {
-        _id: 6,
-        name: 'Архыз',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg',
-        time: '162'
-    },
-    {
-        _id: 1,
-        name: 'Челябинская область Челябинская областьЧелябинская ',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg',
-        time: '86'
-    },
-    {
-        _id: 2,
-        name: 'Иваново',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg',
-        time: '162'
-    },
-    {
-        _id: 3,
-        name: 'Камчатка',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg',
-        time: '162'
-    }
-];
 
 const savedCards = [{
     _id: 6,
@@ -154,8 +57,9 @@ const savedCards = [{
         time: '100'
     },]
 
-export default URL_MOVIES
+// export default URL_MOVIES
+// export default URL_LOCALDB
 
 export {
-    savedCards, burgerMenuCheckbox, URL_MOVIES, LOADED_MOVIES
+    savedCards, burgerMenuCheckbox, LOADED_MOVIES
 }

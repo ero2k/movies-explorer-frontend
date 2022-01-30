@@ -1,6 +1,5 @@
 import React from "react";
 import "./SearchForm.css"
-import api from "../../utils/MoviesApi"
 
 function SearchForm(props) {
 

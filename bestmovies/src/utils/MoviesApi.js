@@ -1,6 +1,6 @@
-import URL_MOVIES from '../utils/constants'
+import {URL_MOVIES} from '../utils/constants'
 
-class Api {
+class ApiMovies {
     constructor({
                     baseUrl,
                 }) {
@@ -26,13 +26,13 @@ class Api {
     getInitialCards() {
         return this._fetchRequest('/')
     }
-
-    likedMovie(){
-        return this._fetchRequest('/')
-    }
+    //
+    // likedMovie(){
+    //     return this._fetchRequest('/')
+    // }
 }
 
-const apiMovies = new Api({
+const apiMovies = new ApiMovies({
     baseUrl: URL_MOVIES,
 });
 

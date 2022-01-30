@@ -1,6 +1,6 @@
-import URL_MOVIES from '../utils/constants'
+import {URL_LOCALDB} from '../utils/constants'
 
-class Api {
+class ApiMain {
     constructor({
                     baseUrl,
                 }) {
@@ -23,18 +23,23 @@ class Api {
         })
     }
 
-    getInitialCards() {
-        return this._fetchRequest('/')
-    }
+    // getInitialCards() {
+    //     return this._fetchRequest('/')
+    // }
 
-    likedMovie(){
-        return this._fetchRequest('/')
+    // likedMovie(idMovie, isLiked) {
+    //     const method = isLiked ? 'DELETE' : 'POST'
+    //     return this._fetchRequest(`/cards/${idMovie}/likes`, `${method}`)
+    // }
+    //
+    likedMovie(movie) {
+        console.log(URL_LOCALDB)
+        return this._fetchRequest(`/movies`, 'POST', movie)
     }
 }
 
-const apiMain = new Api({
-    baseUrl: URL_MOVIES,
+const apiMain = new ApiMain({
+    baseUrl: URL_LOCALDB,
 });
-
 
 export default apiMain;
