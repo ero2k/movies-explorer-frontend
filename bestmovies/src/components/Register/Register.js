@@ -4,7 +4,7 @@ import logo from "../../images/header/logo.svg";
 import {Link} from "react-router-dom";
 
 
-function Register() {
+function Register(props) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -55,7 +55,7 @@ function Register() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        // props.onRegister(name, email, password);
+        props.onRegister({name, email, password});
     }
 
     useEffect(() => {
@@ -79,7 +79,7 @@ function Register() {
                 <img src={logo} alt="Логотип" className="logo"/>
             </Link>
             <h1 className="register__title">Добро пожаловать!</h1>
-            <form action="submit" className="register__form">
+            <form action="submit" className="register__form" onSubmit={handleSubmit}>
                 <label className="register__label">Имя
                     <input onChange={handleChangeName} value={name} type="text" className="register__input" />
                     <span className={`register__error ${!!nameError && 'register__error-visible'}`} >{nameError}</span>
