@@ -5,7 +5,6 @@ import {Link} from "react-router-dom";
 
 
 function Register() {
-    console.log(useFormWithValidation)
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -17,8 +16,11 @@ function Register() {
     function handleChangeName(e) {
         const validName = /^[a-zA-Z- ]+$/.test(e.target.value);
 
+        // console.log(formValid)
+
         if (e.target.value.length < 2) {
             setNameError("Длина имени должна быть не менее 2 символов");
+
         } else if (e.target.value.length > 30) {
             setNameError("Длина имени должна должна быть не более 30 символов");
         } else if (!validName) {
@@ -53,7 +55,7 @@ function Register() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        props.onRegister(name, email, password);
+        // props.onRegister(name, email, password);
     }
 
     useEffect(() => {
@@ -79,18 +81,20 @@ function Register() {
             <h1 className="register__title">Добро пожаловать!</h1>
             <form action="submit" className="register__form">
                 <label className="register__label">Имя
-                    <input type="text" className="register__input" />
-                    <span className="register__error">Что-пошло не так</span>
+                    <input onChange={handleChangeName} value={name} type="text" className="register__input" />
+                    <span className={`register__error ${!!nameError && 'register__error-visible'}`} >{nameError}</span>
                 </label>
                 <label className="register__label">E-mail
-                    <input type="email" className="register__input"/>
-                    <span className="register__error">Что-пошло не так</span></label>
+                    <input onChange={handleChangeEmail} value={email} type="email" className="register__input"/>
+                    <span className={`register__error ${!!emailError && 'register__error-visible'}`}>{emailError}</span></label>
                 <label className="register__label">Пароль
-                    <input type="password" className="register__input"/>
-                    <span className="register__error register__error-visible">Что-пошло не так</span></label>
-                <button type="submit" className="register__btn-submit">Зарегистрироваться</button>
+                    <input onChange={handleChangePassword} value={password} type="password" className="register__input"/>
+                    <span className={`register__error ${!!passwordError && 'register__error-visible'}`}>{passwordError}</span></label>
+
+                <span className={`register__error ${!!nameError && 'register__error-visible'}`}></span>
+                <button type="submit" className={`register__btn-submit ${!formValid && 'register__btn-disabled'}`} disabled={!formValid}>Зарегистрироваться</button>
             </form>
-            <p className="register__paragraph">Уже зарегистрированы?<Link to="/signin" className="register__btn-login">Войти</Link></p>
+            <p className="register__paragraph" >Уже зарегистрированы?<Link to="/signin" className="register__btn-login">Войти</Link></p>
         </section>
     )
 }

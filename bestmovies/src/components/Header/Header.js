@@ -17,8 +17,8 @@ function Header(props) {
                         <img src={logo} alt="Логотип" className="logo"/>
                     </Link>
                     <span className="auth">
-                        <Link to="signin" className="auth__reg">Регистрация</Link>
-                        <Link to="signup" className="auth__enter">Войти</Link>
+                        <Link to="signup" className="auth__reg">Регистрация</Link>
+                        <Link to="signin" className="auth__enter">Войти</Link>
                     </span>
                 </header>
             </Route>
