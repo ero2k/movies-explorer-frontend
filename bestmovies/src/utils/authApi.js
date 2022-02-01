@@ -10,22 +10,24 @@ const headers = {
 
 export const register = ({password, email, name}) => {
     return fetch(`${URL_LOCALDB}/signup`, {
-        headers,
-        // mode: 'no-cors',
+        headers:{
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        credentials: 'include',
+        mode: 'cors',
         method: 'POST',
         body: JSON.stringify({password, email, name}),
     }).then(res => checkResponse(res));
 };
-
-export const test = () => {
-    return fetch(`${URL_LOCALDB}/`, {
-        headers,
-        // mode: 'no-cors',
-        method: 'GET',
-        // body: JSON.stringify({password, email, name}),
-        accept: '*/*'
-    }).then(res => checkResponse(res));
-};
+// export const test = () => {
+//     return fetch(`${URL_LOCALDB}/`, {
+//
+//         // // mode: 'no-cors',
+//         // method: 'GET',
+//         // // body: JSON.stringify({password, email, name}),
+//         // accept: '*/*'
+//     }).then(res => checkResponse(res));
+// };
 
 // export const authorize = ({password, email}) => {
 //     return fetch(`${URL_LOCALDB}/signin`, {

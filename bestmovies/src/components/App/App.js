@@ -15,7 +15,7 @@ import NotFound from "../NotFound/NotFound";
 import Menu from "../Menu/Menu";
 import { useState, useEffect } from 'react';
 import {register, test} from "../../utils/authApi";
-
+import {URL_LOCALDB} from "../../utils/constants";
 
 
 function App() {
@@ -32,29 +32,31 @@ function App() {
         setCloseMenu(true)
     }
 
-    // const onRegister =  (data) => {
-    //     return register(data)
-    //         .then(() =>
-    //             setAuthSuccess(true)
-    //         )
-    //         .then(() => {
-    //             history.push('/signin');
-    //         }).catch(err => {
-    //             console.warn(err)
-    //             setAuthSuccess(false)
-    //         });
-    // };
     const onRegister =  (data) => {
-        return test()
-            .then((data) =>
-                console.log(data)
+        return register(data)
+            .then(() =>
+                setAuthSuccess(true)
             )
             .then(() => {
+                history.push('/signin');
             }).catch(err => {
                 console.warn(err)
                 setAuthSuccess(false)
             });
     };
+    // const onRegister =  (data) => {
+    //     return test()
+    //         .then((data) =>
+    //             console.log(data)
+    //         )
+    //         .then(() => {
+    //         }).catch(err => {
+    //             console.warn(err)
+    //             setAuthSuccess(false)
+    //         });
+    // };
+
+    // fetch(URL_LOCALDB).then(data => console.log(data))
 
 
     // const onRegister = async (data) => {

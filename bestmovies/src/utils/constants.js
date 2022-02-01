@@ -1,6 +1,6 @@
 export const URL_MOVIES = "https://api.nomoreparties.co/beatfilm-movies"
-export const URL_LOCALDB = "https://api.bestmovies.nomoredomains.monster"
-// export const URL_LOCALDB = "http://localhost:3001"
+// export const URL_LOCALDB = "https://api.bestmovies.nomoredomains.monster"
+export const URL_LOCALDB = "http://localhost:3001"
 const LOADED_MOVIES = {
     'desktop': {
         'totalCards': 12,
