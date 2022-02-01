@@ -3,6 +3,7 @@ import "./MoviesCardList.css"
 import MoviesCard from "../MoviesCard/MoviesCard";
 
 function MoviesCardList(props) {
+    const currentPath = window.location.pathname
     return (
         <section className="movies-list__section max-width">
             <ul className="movies-list__list">
@@ -13,7 +14,7 @@ function MoviesCardList(props) {
                     ))
                 }
             </ul>
-            <button className="movies-list__button">Ещё</button>
+            {currentPath === '/movies' && <button className="movies-list__button">Ещё</button>}
         </section>
     )
 }

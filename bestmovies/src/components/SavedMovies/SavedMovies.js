@@ -3,7 +3,7 @@ import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList"
 import {savedCards} from "../../utils/constants";
 
-function Movies() {
+function SavedMovies() {
     return (
         <main>
             <SearchForm/>
@@ -12,4 +12,4 @@ function Movies() {
     )
 }
 
-export default Movies;
+export default SavedMovies;

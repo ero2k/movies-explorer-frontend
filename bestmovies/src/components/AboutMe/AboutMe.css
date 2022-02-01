@@ -184,6 +184,13 @@
     }
 }
 
+@media screen  and (max-width: 420px) {
+    .aboutme__photo{
+        max-width: 170px;
+    }
+}
+
+
 @media screen  and (max-width: 320px) {
 
     .aboutme {

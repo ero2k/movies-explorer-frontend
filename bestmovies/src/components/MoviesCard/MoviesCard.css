@@ -30,16 +30,37 @@
     padding: 0;
 }
 
-.movie__button-like{
+.movie__card-button{
     width: 24px;
     height: 24px;
     margin-top: -4px;
     border-radius: 36px;
     border: none;
+}
+
+.btn-heart{
+    background: url("../../images/movie/heart-disable.svg") no-repeat center #F9F9F9;
+}
+
+.btn-heart-active{
     background: url("../../images/movie/heart.svg") no-repeat center #F9F9F9;
 }
 
-.movie__button-like:hover{
+.btn-heart-active:hover{
+    cursor: pointer;
+}
+
+.btn-heart:hover{
+    cursor: pointer;
+}
+
+.btn-unliked{
+    background: url("../../images/movie/unliked.svg") no-repeat center #F9F9F9;
+    visibility: hidden;
+}
+
+.movie__description:hover .btn-unliked{
+    visibility: visible;
     cursor: pointer;
 }
 
