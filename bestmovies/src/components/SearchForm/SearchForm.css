@@ -1,7 +1,19 @@
 .search-form {
     margin: 0 auto;
-    padding: 68px 0;
-    border-bottom: 1px #E8E8E8 solid;
+    padding: 68px  30px 109px 30px;
+    position: relative;
+    /*border-bottom: 1px #E8E8E8 solid;*/
+}
+
+.search-form::after{
+    content: '';
+    position: absolute;
+    bottom:0;
+    /*left:50%;*/
+    width:95%;
+    height:1px;
+    /*margin-left:-30%;*/
+    background:#E8E8E8
 }
 
 .search-form__form {

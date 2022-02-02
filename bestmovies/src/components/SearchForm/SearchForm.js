@@ -16,6 +16,7 @@ function SearchForm() {
                     </label>
                     <p className='search-form__paragraph'>Короткометражки</p>
                 </div>
+                <span className={'search-form__border-bottom'} ></span >
             </form>
         </section>
     )
