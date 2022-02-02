@@ -13,6 +13,7 @@ function Header(props) {
         <Switch>
             <Route exact path='/'>
                 <header className="header">
+                    <div className="header__panel">
                     <Link to="/" target="_self">
                         <img src={logo} alt="Логотип" className="logo"/>
                     </Link>
@@ -20,11 +21,13 @@ function Header(props) {
                         <Link to="signin" className="auth__reg">Регистрация</Link>
                         <Link to="signup" className="auth__enter">Войти</Link>
                     </span>
+                    </div>
                 </header>
             </Route>
 
             <Route path='/*'>
                 <header className={headerClass}>
+                    <div className="header__panel">
                     <Link to="/" target="_self">
                         <img src={logo} alt="Логотип" className="logo"/>
                     </Link>
@@ -47,6 +50,7 @@ function Header(props) {
                         <button className="auth__button-burger" onClick={props.onOpen}>
                             <img src={burger} className="menu-burger" alt="Открыть меню"/>
                         </button>
+                    </div>
                     </div>
                 </header>
             </Route>

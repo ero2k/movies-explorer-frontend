@@ -35,6 +35,8 @@
 @media screen and (max-width: 768px) {
     .movies-list {
         max-width: 708px;
+        padding: 0 10px;
+
     }
 
 

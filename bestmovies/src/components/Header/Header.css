@@ -1,9 +1,14 @@
 .header {
     background-color: #073042;
-    padding: 18px 70px;
+}
+
+.header__panel{
+    padding: 18px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    max-width: 1140px;
+    margin: 0 auto;
 }
 
 .background-white {
@@ -133,8 +138,9 @@
 }
 
 @media screen and (max-width: 768px) {
-    .header {
-        padding: 18px 30px;
+    .header__panel {
+        padding: 18px 10px;
+        max-width: 708px;
     }
 
     .header__section-movie{
