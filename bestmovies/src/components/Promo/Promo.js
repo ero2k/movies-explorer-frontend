@@ -4,7 +4,7 @@ import "./Promo.css"
 function Promo(props) {
     return (
             <section className="promo">
-                <h1 className="promo__title font-size_large">Учебный проект студента факультета Веб-разработки.</h1>
+                <h1 className="promo__title fontsize-large">Учебный проект студента факультета Веб-разработки.</h1>
             </section>
     )
 }

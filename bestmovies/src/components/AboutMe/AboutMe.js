@@ -7,13 +7,13 @@ function AboutMe() {
     return (
         <section id="about-me" className="aboutme max-width">
             <div className="aboutme__section-title">
-                <h2 className="aboutme__title font-size_title">Студент</h2>
+                <h2 className="aboutme__title fontsize-title">Студент</h2>
             </div>
             <div className="aboutme__section-description">
                 <div className="aboutme__student">
-                    <p className="aboutme__name font-size_large">Денис</p>
+                    <p className="aboutme__name fontsize-large">Денис</p>
                     <p className="aboutme__prof">Фронтенд-разработчик, 32 лет</p>
-                    <p className="font-size_paragraph  aboutme__description">Я родился в Улан-Удэ, живу в Новосибирске.
+                    <p className="fontsize-paragraph  aboutme__description">Я родился в Улан-Удэ, живу в Новосибирске.
                   Я люблю слушать музыку и увлекаюсь программированием.</p>
                     <div className="aboutme__links">
                         <ul className="aboutme__links-list">

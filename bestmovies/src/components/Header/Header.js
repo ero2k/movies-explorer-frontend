@@ -31,20 +31,20 @@ function Header(props) {
                     <nav className="header__section-movie">
                         <ul className="header__links">
                             <li className="header__link">
-                                <NavLink className="header__movie-link" activeClassName="header__link_active" exact
+                                <NavLink className="header__movie-link" activeClassName="header__link-active" exact
                                          to="movies">Фильмы</NavLink>
                             </li>
                             <li className="header__link">
-                                <NavLink className="header__movie-link" activeClassName="header__link_active"
+                                <NavLink className="header__movie-link" activeClassName="header__link-active"
                                          to="saved-movies">Сохранённые фильмы</NavLink>
                             </li>
                         </ul>
                     </nav>
                     <div className="auth">
                         <Link to="profile" className="header__acc">Аккаунт
-                            <div className="header__logo"></div>
+                            <div className="account-logo"></div>
                         </Link>
-                        <button className="button__menu-burger" onClick={props.onOpen}>
+                        <button className="auth__button-burger" onClick={props.onOpen}>
                             <img src={burger} className="menu-burger" alt="Открыть меню"/>
                         </button>
                     </div>

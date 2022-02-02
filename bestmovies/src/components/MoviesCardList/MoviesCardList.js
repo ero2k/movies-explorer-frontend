@@ -5,7 +5,7 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 function MoviesCardList(props) {
     const currentPath = window.location.pathname
     return (
-        <section className="movies-list__section max-width">
+        <section className="movies-list max-width">
             <ul className="movies-list__list">
                 {
                     props.cards.map((card) => (

@@ -192,12 +192,10 @@
 
 
 @media screen  and (max-width: 320px) {
-
     .aboutme {
         max-width: 292px;
         padding: 92px 0 110px 0;
     }
-
 
     .aboutme__section-description {
         flex-direction: column;

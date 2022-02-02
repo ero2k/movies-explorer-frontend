@@ -3,15 +3,12 @@ import "./SearchForm.css"
 
 function SearchForm() {
     return (
-        <section className="search-form__section max-width">
+        <section className="search-form max-width">
             <form className="search-form__form" action="">
-                {/*<div>*/}
                     <div className="search-form__search-icon"></div>
-                    <input className="search-form__input" placeholder="Фильм" type="text"/>
+                    <input className="search-form__input" placeholder="Фильм" type="text" required/>
                     <button className='search-form__btn-submit'></button>
                     <span className='search-form__border'></span>
-                {/*</div>*/}
-
                 <div className='search-form__section-option'>
                     <label htmlFor="search-form__checkbox" className="search-form__label">
                         <input type="checkbox" id="search-form__checkbox" className='search-form__checkbox'/>

@@ -24,7 +24,7 @@ function Menu(props) {
                         <NavLink className="menu__link" activeClassName="menu__link_active" exact to="/saved-movies">Сохранённые фильмы</NavLink>
                     </li>
                     <li className="menu__item">
-                        <NavLink className="menu__link" activeClassName="menu__link_active" exact to="/profile">Аккаунт<div className="header__logo"></div></NavLink>
+                        <NavLink className="menu__link" activeClassName="menu__link_active" exact to="/profile">Аккаунт<div className="account-logo"></div></NavLink>
                     </li>
                 </ul>
             </nav>
