@@ -13,7 +13,7 @@ import Register from "../Register/Register";
 import Login from "../Login/Login";
 import NotFound from "../NotFound/NotFound";
 import Menu from "../Menu/Menu";
-
+document.documentElement.lang = 'ru'
 
 function App() {
     const [isCloseMenu, setCloseMenu] = React.useState(false)
