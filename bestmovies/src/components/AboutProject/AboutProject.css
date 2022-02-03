@@ -1,0 +1,150 @@
+.about {
+    padding: 110px 50px;
+    margin: 0 auto;
+}
+
+.about__section-title {
+    border-bottom: 1px #000000 solid;
+}
+
+.about__title {
+    margin: 0 auto 23px auto;
+    letter-spacing: -1px;
+}
+
+.about__list {
+    margin: 70px 0 110px 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+}
+
+.about__list li:first-child {
+margin-right: 10px;
+}
+
+.about__item {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 550px;
+}
+
+.about__subtitle {
+    padding: 0 0 26px 0;
+    margin: 0;
+    letter-spacing: -0.8px;
+}
+
+.about__paragraph {
+    padding: 0;
+    margin: 0;
+    letter-spacing: unset;
+}
+
+.about__progress {
+    text-align: center;
+    margin: 0;
+    padding: 0 0 0px 0;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    align-items: center;
+    list-style: none;
+}
+
+.about__progress-item {
+    margin: 0;
+}
+
+.about__progress-period {
+    margin: 0;
+    font-size: 14px;
+    line-height: 17px;
+    font-weight: 500;
+    padding: 9px 0;
+}
+
+li:first-child .about__progress-period {
+    background-color: #2BE080;
+}
+
+li:nth-child(2) .about__progress-period {
+    background-color: #F2F2F2;
+}
+
+.about__progress-label {
+    padding-top: 14px;
+    margin: 0;
+    font-size: 14px;
+    line-height: 17px;
+    font-weight: 500;
+    color: #A0A0A0;
+}
+
+@media screen and (max-width: 768px) {
+    .about{
+        padding: 90px 18px;
+    }
+
+    .about__item{
+        max-width: 319px;
+    }
+
+    .about__subtitle {
+        padding: 0 0 23px 0;
+    }
+
+    .about__list {
+        margin: 70px 0 92px 0;
+    }
+
+    .about__progress {
+        grid-template-columns: 140px auto;
+
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .about{
+        padding: 71px 18px;
+    }
+
+    .about__list {
+        flex-direction: column;
+        margin: 63px 0 2px 0;
+    }
+
+    .about__list li:first-child {
+        margin-right: 0;
+    }
+    .about__subtitle {
+        padding: 0 0 16px 0;
+        margin: 0;
+        letter-spacing: -0.8px;
+    }
+
+    .about__paragraph {
+        padding: 0 0 0px 0;
+    }
+
+    .about__item {
+        margin-bottom: 56px;
+    }
+
+    .about__progress-period {
+        margin: 0;
+        font-size: 11px;
+        line-height: 13px;
+        font-weight: 400;
+        padding: 11px 10px;
+    }
+
+    .about__progress-label {
+        font-size: 11px;
+    }
+
+    .about__progress {
+        grid-template-columns: 100px 3fr;
+    }
+}

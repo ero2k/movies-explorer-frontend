@@ -1,0 +1,88 @@
+.movie {
+    margin: 0 auto;
+    /*max-width: 270px;*/
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.movie__photo {
+    width: 100%;
+    height: 100%;
+    max-height: 151px;
+    object-fit: cover;
+}
+
+.movie__description{
+    display: flex;
+    justify-content: space-between;
+    margin-top:  14px;
+    border-bottom: 1px #E8E8E8 solid;
+    min-height: 46px;
+}
+
+.movie__title{
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+}
+
+.movie__card-button{
+    width: 24px;
+    height: 24px;
+    margin-top: -4px;
+    border-radius: 36px;
+    border: none;
+}
+
+.btn-heart{
+    background: url("../../images/movie/heart-disable.svg") no-repeat center #F9F9F9;
+}
+
+.btn-heart-active{
+    background: url("../../images/movie/heart.svg") no-repeat center #F9F9F9;
+}
+
+.btn-heart-active:hover{
+    cursor: pointer;
+}
+
+.btn-heart:hover{
+    cursor: pointer;
+}
+
+.btn-unliked{
+    background: url("../../images/movie/unliked.svg") no-repeat center #F9F9F9;
+    visibility: hidden;
+}
+
+.movie__description:hover .btn-unliked{
+    visibility: visible;
+    cursor: pointer;
+}
+
+.movie__duration{
+    font-size: 11px;
+    line-height: 13px;
+    font-weight: 400;
+    color: #A0A0A0;
+    padding: 0;
+    margin: 6px 0 0 0;
+}
+
+@media screen and (max-width: 768px) {
+    .movie__photo {
+        max-height: 190px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .movie__photo {
+        max-height: 167px;
+    }
+}
+
+

@@ -1,0 +1,120 @@
+.login {
+    margin: 70px auto;
+    max-width: 396px;
+}
+
+.login__form {
+
+}
+
+.login__title {
+    margin: 38px auto;
+    font-size: 24px;
+    line-height: 29px;
+    font-weight: 500;
+}
+
+.login__form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login__label {
+    display: flex;
+    flex-direction: column;
+    font-size: 10px;
+    line-height: 12px;
+    font-weight: 400;
+    color: #A0A0A0;
+    position: relative;
+}
+
+.login__input {
+    margin: 10px 0 20px 0;
+    padding: 15px;
+    background-color: #F9F9F9;
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 400;
+    border-radius: 8px;
+    border: none;
+}
+
+.login__error {
+    font-size: 10px;
+    line-height: 12px;
+    font-weight: 400;
+    color: #FF3055;
+    position: absolute;
+    bottom: calc(100% - 84px);
+    visibility: hidden;
+}
+
+.login__error-visible{
+    visibility: visible;
+}
+
+.login__btn-submit{
+    width: 100%;
+    min-height: 45px;
+    background-color: #3456F3;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    margin: 160px 0 16px 0;
+    font-size: 14px;
+    line-height: 17px;
+    font-weight: 500;
+}
+
+.login__paragraph{
+    margin: 0 auto;
+    padding: 0;
+    font-size: 14px;
+    line-height: 17px;
+    font-weight: 400;
+    color: #A0A0A0;
+    text-align: center;
+}
+
+.login__btn-login{
+    text-decoration: none;
+    color: #3456F3;
+    margin-left: 6px;
+}
+@media screen and (max-width: 768px) {
+    .login {
+        margin: 232px auto;
+    }
+}
+
+@media screen and (max-width: 510px) {
+    .login {
+        margin: 56px auto 30px auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .login__title {
+        margin: 50px auto 80px auto;
+        font-size: 24px;
+        line-height: 29px;
+        font-weight: 500;
+    }
+
+    .login__form {
+        min-width: 260px;
+    }
+
+    .login__btn-submit {
+        margin: 247px 0 13px 0;
+        font-size: 12px;
+    }
+
+    .login__paragraph {
+        font-size: 12px;
+    }
+}
+
