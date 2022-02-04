@@ -19,19 +19,15 @@ class ApiMain {
             if (res.ok) {
                 return res.json();
             }
+            console.log(res)
             return Promise.reject(`Ошибка: ${res.status}`);
         })
     }
 
-    // getInitialCards() {
-    //     return this._fetchRequest('/')
-    // }
+    saveProfile (data)  {
+        return this._fetchRequest('/users/me', 'PATCH', data)
+    }
 
-    // likedMovie(idMovie, isLiked) {
-    //     const method = isLiked ? 'DELETE' : 'POST'
-    //     return this._fetchRequest(`/cards/${idMovie}/likes`, `${method}`)
-    // }
-    //
     likedMovie(movie) {
         console.log(URL_LOCALDB)
         return this._fetchRequest(`/movies`, 'POST', movie)

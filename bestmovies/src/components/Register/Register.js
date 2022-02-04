@@ -16,8 +16,6 @@ function Register(props) {
     function handleChangeName(e) {
         const validName = /^[a-zA-Z- ]+$/.test(e.target.value);
 
-        // console.log(formValid)
-
         if (e.target.value.length < 2) {
             setNameError("Длина имени должна быть не менее 2 символов");
 
@@ -91,7 +89,7 @@ function Register(props) {
                     <input onChange={handleChangePassword} value={password} type="password" className="register__input"/>
                     <span className={`register__error ${!!passwordError && 'register__error-visible'}`}>{passwordError}</span></label>
 
-                <span className={`register__error ${!!nameError && 'register__error-visible'}`}></span>
+                <span className={`register__error register__error-response ${!!props.message && 'register__error-visible'}`}>{props.message}</span>
                 <button type="submit" className={`register__btn-submit ${!formValid && 'register__btn-disabled'}`} disabled={!formValid}>Зарегистрироваться</button>
             </form>
             <p className="register__paragraph" >Уже зарегистрированы?<Link to="/signin" className="register__btn-login">Войти</Link></p>
