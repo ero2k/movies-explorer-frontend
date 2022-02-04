@@ -59,6 +59,7 @@ function Movies() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    console.log(moviesArray)
 
     return (
         <main>

@@ -1,5 +1,5 @@
 .aboutme {
-    padding: 110px 0 107px 0;
+    padding: 110px 50px 107px 50px;
     margin: 0 auto 0 auto;
 }
 
@@ -60,6 +60,7 @@
 .aboutme__student {
     display: flex;
     flex-direction: column;
+    margin-right: 10px;
 }
 
 .aboutme__link {
@@ -131,7 +132,7 @@
 
 @media screen  and (max-width: 768px) {
     .aboutme {
-        padding: 92px 0 131px 0;
+        padding: 92px 14px 131px 14px;
     }
 
     .aboutme__photo {
@@ -184,13 +185,18 @@
     }
 }
 
-@media screen  and (max-width: 320px) {
+@media screen  and (max-width: 420px) {
+    .aboutme__photo{
+        max-width: 170px;
+    }
+}
 
+
+@media screen  and (max-width: 350px) {
     .aboutme {
         max-width: 292px;
-        padding: 92px 0 110px 0;
+        padding: 92px 14px 110px 14px;
     }
-
 
     .aboutme__section-description {
         flex-direction: column;
@@ -198,6 +204,7 @@
 
     .aboutme__student {
         order: 2;
+        margin: 0;
     }
 
     .aboutme__section-photo {

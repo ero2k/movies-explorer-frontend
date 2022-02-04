@@ -1,7 +1,8 @@
 .techs {
     margin: 0 auto;
     background-color: #F5F5F5;
-    padding-top: 102px;
+    /*padding-top: 102px;*/
+    padding: 102px 50px 0px 50px;
 }
 
 .techs__section-title {
@@ -70,7 +71,7 @@
 
 @media screen and (max-width: 768px) {
     .techs {
-        padding-top: 0;
+        padding: 0px 18px;
     }
 
     .techs__section-title {
@@ -102,7 +103,15 @@
     }
 }
 
-@media screen and (max-width: 320px) {
+/*@media screen and (max-width: 570px) {*/
+/*    .techs__section-list {*/
+/*        display: grid;*/
+/*        grid-template-columns: auto auto;*/
+/*        grid-gap: 10px;*/
+/*    }*/
+/*}*/
+
+@media screen and (max-width: 570px) {
     .techs {
         padding: 0 14px;
         background-color: white;

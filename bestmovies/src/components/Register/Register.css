@@ -1,10 +1,6 @@
 .register {
-    margin: 70px auto 0 auto;
+    margin: 70px auto;
     max-width: 396px;
-}
-
-.register__form {
-
 }
 
 .register__title {
@@ -96,13 +92,13 @@
 
 @media screen and (max-width: 768px) {
     .register {
-        margin: 232px auto 0 auto;
+        margin: 232px auto ;
     }
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 510px) {
     .register {
-        margin: 56px auto 0 auto;
+        margin: 56px auto 30px auto;
         display: flex;
         justify-content: center;
         align-items: center;

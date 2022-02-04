@@ -6,11 +6,11 @@ function Techs() {
     return (
         <section id="techs" className="techs">
             <div className="techs__section-title max-width">
-                <h2 className="techs__title font-size_title">Технологии</h2>
+                <h2 className="techs__title fontsize-title">Технологии</h2>
             </div>
             <div className="techs__section-subtitle">
-                <h3 className="techs__subtitle font-size_large">7 технологий</h3>
-                <p className="techs__paragraph font-size_paragraph">На курсе веб-разработки мы освоили технологии,
+                <h3 className="techs__subtitle fontsize-large">7 технологий</h3>
+                <p className="techs__paragraph fontsize-paragraph">На курсе веб-разработки мы освоили технологии,
                     которые применили в дипломном проекте.</p>
             </div>
             <div className="techs__section-technologies">

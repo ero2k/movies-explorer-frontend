@@ -63,7 +63,6 @@
     border: none;
     background-color: white;
     cursor: pointer;
-    margin-bottom: 70px;
     color: #FF3055;
     font-size: 13px;
     line-height: 16px;
@@ -83,7 +82,7 @@
     }
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 510px) {
     .profile{
         padding: 67px 0 70px 0;
     }

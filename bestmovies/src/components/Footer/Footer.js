@@ -3,7 +3,7 @@ import "./Footer.css"
 
 function Footer() {
     const currentPathname = document.location.pathname
-    const footerPath = ['/movies', '/favorite-movies', '/'] //'/profile', '/register', '/login'
+    const footerPath = ['/movies', '/saved-movies', '/'] //'/profile', '/register', '/login'
     const footerClass =  footerPath.indexOf(currentPathname) >= 0 ? "footer max-width" : "footer hidden"
 
     return (

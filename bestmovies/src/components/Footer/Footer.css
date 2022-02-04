@@ -1,5 +1,6 @@
 .footer {
     margin: 79px auto 20px auto;
+    padding: 0 30px;
 }
 
 .footer__title {
@@ -56,6 +57,7 @@
 @media screen  and (max-width: 768px) {
     .footer {
         margin: 20px auto 20px auto;
+        padding: 0 10px;
         max-width: 708px;
     }
 }

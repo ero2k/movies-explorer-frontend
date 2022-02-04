@@ -20,6 +20,10 @@ import {CurrentUserContext} from '../../contexts/CurrentUserContext'
 import {URL_LOCALDB} from "../../utils/constants";
 
 
+document.documentElement.lang = 'ru'
+
+
+
 function App() {
     const [isCloseMenu, setCloseMenu] = useState(false)
     const [isOpenPreloader, setOpenPreloader] = useState(false)
