@@ -43,8 +43,8 @@ function Register(props) {
     }
 
     function handleChangePassword(e) {
-        if (e.target.value.length < 6) {
-            setPasswordError("Пароль должен быть не менее 6 символов");
+        if (e.target.value.length < 8) {
+            setPasswordError("Пароль должен быть не менее 8 символов");
         } else {
             setPasswordError("");
         }

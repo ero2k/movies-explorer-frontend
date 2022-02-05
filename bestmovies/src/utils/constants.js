@@ -171,8 +171,6 @@ const savedCards = [{
         }
     }]
 
-// export default URL_MOVIES
-// export default URL_LOCALDB
 
 export {
     savedCards, burgerMenuCheckbox, LOADED_MOVIES

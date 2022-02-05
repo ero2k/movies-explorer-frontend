@@ -14,14 +14,13 @@ import Login from "../Login/Login";
 import NotFound from "../NotFound/NotFound";
 import Menu from "../Menu/Menu";
 import {useState, useEffect} from 'react';
-import {register, getEmail} from "../../utils/authApi";
+import {register, getEmail, authorize} from "../../utils/authApi";
 import apiMain from "../../utils/MainApi"
 import {CurrentUserContext} from '../../contexts/CurrentUserContext'
 import {URL_LOCALDB} from "../../utils/constants";
-
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 document.documentElement.lang = 'ru'
-
 
 
 function App() {
@@ -41,6 +40,7 @@ function App() {
         setCloseMenu(true)
     }
 
+
     const tokenCheck = () => {
         const jwt = localStorage.getItem('jwt')
 
@@ -49,12 +49,13 @@ function App() {
         }
         getEmail(jwt)
             .then(data => {
-                // setUserInfo(data[0].email);
-                console.log(data)
                 setCurrentUser({'email': data[0].email, 'name': data[0].name})
                 setIsLoggedIn(true);
             })
-            .catch(err => console.warn(err));
+            .catch(err => {
+                setIsLoggedIn(false);
+                console.warn(err)
+            });
     };
 
     useEffect(() => {
@@ -81,60 +82,86 @@ function App() {
             });
     };
 
+    const onLogin = (data) => {
+        return authorize(data)
+            .then(({token}) => {
+                localStorage.setItem('jwt', token);
+                setIsLoggedIn(true);
+                history.push("/movies");
+            }).catch((err) => {
+                if (err.status === 401) {
+                    return setMessage("Неверный email или пароль");
+                }
+                setMessage("При авторизации произошла ошибка");
+
+            });
+    };
+
     function handleUpdateUser(data) {
-        apiMain.saveProfile(data).then((reqdata) => {
-            setCurrentUser(reqdata)
-        }).catch(err => console.warn(err))
+        return apiMain.saveProfile(data, localStorage.getItem('jwt')).then((reqdata) => {
+            console.log(reqdata)
+            setCurrentUser({name: reqdata.name, email: reqdata.email})
+        }).catch(err => {
+            if (err.status === 409) {
+                setMessage("Пользователь с таким email уже существует");
+            } else {
+                setMessage("При регистрации пользователя произошла ошибка");
+            }
+        })
     }
 
-    // fetch(URL_LOCALDB).then(data => console.log(data))
+    function handleCardLike(data) {
 
+        return apiMain.likedMovie()
 
-    // const onRegister = async (data) => {
-    //     return register(data)
-    //         .then(() =>
-    //             setAuthSuccess(true)
-    //         )
-    //         .then(() => setInfoTooltipOpen(true))
-    //         .then(() => {
-    //             history.push('/signin');
-    //         }).catch(err => {
-    //             console.warn(err)
-    //             setAuthSuccess(false)
-    //             setInfoTooltipOpen(true)
-    //         });
-    // };
+    }
+
+    const onLogout = () => {
+        setIsLoggedIn(false);
+        localStorage.removeItem('jwt');
+        history.push('/signin');
+    };
 
     return (
         <CurrentUserContext.Provider value={currentUser}>
             <div className="page">
-                <Header onOpen={openMenu}/>
                 <Switch>
+
                     <Route exact path="/">
+                        <Header onOpen={openMenu} isLoggedIn={isLoggedIn} page={'main'}/>
                         <Main/>
+                        <Footer/>
                     </Route>
-                    <Route path="/movies">
-                        <Movies/>
-                    </Route>
-                    <Route path="/saved-movies">
-                        <SavedMovies/>
-                    </Route>
-                    <Route path="/profile" onUpdateUser={handleUpdateUser} >
-                        <Profile/>
-                    </Route>
+
+                    <ProtectedRoute tokenCheck={tokenCheck} onOpen={openMenu} page={'movies'} isLoggedIn={isLoggedIn}
+                                    path="/movies"
+                                    component={Movies}>
+                    </ProtectedRoute>
+
+                    <ProtectedRoute component={SavedMovies} isLoggedIn={isLoggedIn} path="/saved-movies"
+                                    onOpen={openMenu} page={'saved-movies'}>
+                    </ProtectedRoute>
+
+                    <ProtectedRoute component={Profile} path="/profile" onOpen={openMenu} isLoggedIn={isLoggedIn}
+                                    page={'profile'} onUpdateUser={handleUpdateUser} message={message}
+                                    onLogout={onLogout}>
+                    </ProtectedRoute>
+
                     <Route path="/signup">
                         <Register onRegister={onRegister} message={message}/>
                     </Route>
+
                     <Route path="/signin">
-                        <Login/>
+                        <Login onLogin={onLogin} message={message}/>
                     </Route>
+
                     <Route path="/*">
                         <NotFound/>
                     </Route>
+
                 </Switch>
                 <Preloader isOpen={isOpenPreloader}/>
                 <Menu onClose={closeMenu} isClose={isCloseMenu}/>
-                <Footer/>
             </div>
         </CurrentUserContext.Provider>
     );

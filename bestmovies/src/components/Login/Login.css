@@ -65,6 +65,29 @@
     font-size: 14px;
     line-height: 17px;
     font-weight: 500;
+    cursor: pointer;
+}
+
+.login__error {
+    font-size: 10px;
+    line-height: 12px;
+    font-weight: 400;
+    color: #FF3055;
+    position: absolute;
+    bottom: calc(100% - 88px);
+    visibility: hidden;
+}
+
+.login__error-visible {
+    visibility: visible;
+}
+.login__error-response{
+    bottom: calc(100% - 538px);
+}
+
+.login__btn-disabled {
+    background-color: gray;
+    cursor: not-allowed;
 }
 
 .login__paragraph{

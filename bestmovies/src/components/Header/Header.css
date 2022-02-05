@@ -2,7 +2,7 @@
     background-color: #073042;
 }
 
-.header__panel{
+.header__panel {
     padding: 18px 30px;
     display: flex;
     justify-content: space-between;
@@ -35,6 +35,8 @@
     font-weight: 400;
     margin-right: 16px;
 }
+
+
 
 .header__movie-link:last-child {
     margin: 0;
@@ -72,7 +74,7 @@
     margin-right: -75px;
 }
 
-.menu-burger{
+.menu-burger {
     display: none;
     padding: 0;
     margin: 0;
@@ -109,7 +111,7 @@
     transition: all 0.5s ease;
 }
 
-.auth__button-burger{
+.auth__button-burger {
     border: none;
     box-shadow: none;
     background: none;
@@ -137,21 +139,25 @@
     color: grey;
 }
 
+.header__movie-link-white {
+    color: white;
+}
+
 @media screen and (max-width: 768px) {
     .header__panel {
         padding: 18px 10px;
         max-width: 708px;
     }
 
-    .header__section-movie{
+    .header__section-movie {
         display: none;
     }
 
-    .menu-burger{
+    .menu-burger {
         display: block;
     }
 
-    .header__acc{
+    .header__acc {
         display: none;
     }
 }

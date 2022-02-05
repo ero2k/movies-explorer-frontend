@@ -1,13 +1,10 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import "./Footer.css"
 
 function Footer() {
-    const currentPathname = document.location.pathname
-    const footerPath = ['/movies', '/saved-movies', '/'] //'/profile', '/register', '/login'
-    const footerClass =  footerPath.indexOf(currentPathname) >= 0 ? "footer max-width" : "footer hidden"
 
     return (
-        <footer className={footerClass}>
+        <footer className='footer max-width'>
             <p className="footer__title">Учебный проект Яндекс.Практикум х BeatFilm.</p>
             <div className="footer__section-label">
                 <p className="footer__copyright">&#169; {new Date().getFullYear()}</p>

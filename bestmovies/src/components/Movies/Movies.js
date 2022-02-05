@@ -1,15 +1,18 @@
 import React from "react";
 import {useState, useEffect} from 'react';
-
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList"
 import {LOADED_MOVIES} from "../../utils/constants";
 import apiMovies from "../../utils/MoviesApi";
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 
-function Movies() {
+function Movies(props) {
     const [moviesArray, setMoviesArray] = React.useState([])
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
     const [searchPhrase, setSearchPhrase] = React.useState('')
+
+    console.log(props)
 
     function handleInputChange(e) {
         setSearchPhrase(e.target.value)
@@ -29,18 +32,18 @@ function Movies() {
         e.preventDefault()
         try {
             const movies = await apiMovies.getInitialCards()
-            await localStorage.setItem('movies', JSON.stringify(movies) )
+            await localStorage.setItem('movies', JSON.stringify(movies))
             setMoviesArray(JSON.parse(localStorage.getItem('movies')))
         } catch (error) {
             console.log(error)
         }
     }
 
-    useEffect(()=>{
-        if(!!localStorage.movies){
+    useEffect(() => {
+        if (!!localStorage.movies) {
             setMoviesArray(JSON.parse(localStorage.getItem('movies')))
         }
-    },[])
+    }, [])
 
     console.log(localStorage.movies)
 
@@ -55,17 +58,22 @@ function Movies() {
         function handleResize() {
             setWindowDimensions(getWindowDimensions());
         }
+
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    console.log(moviesArray)
 
     return (
-        <main>
-            <SearchForm onSubmit={handleMoviesArray} onChange={handleInputChange} value={searchPhrase}/>
-            <MoviesCardList cards={moviesArray} size={windowDimensions} schemeDevice={getCurrentDeviceScheme(windowDimensions.width)}/>
-        </main>
+        <>
+            <Header onOpen={props.onOpen} isLoggedIn={props.isLoggedIn} page={props.page}/>
+            <main>
+                <SearchForm onSubmit={handleMoviesArray} onChange={handleInputChange} value={searchPhrase}/>
+                <MoviesCardList cards={moviesArray} size={windowDimensions}
+                                schemeDevice={getCurrentDeviceScheme(windowDimensions.width)}/>
+            </main>
+            <Footer/>
+        </>
     )
 }
 

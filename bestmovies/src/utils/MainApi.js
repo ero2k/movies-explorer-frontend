@@ -9,8 +9,12 @@ class ApiMain {
 
     _fetchRequest(path, method = 'GET', {
         ...body
-    } = '') {
+    } = '', jwt = '') {
         return fetch(`${this._url}${path}`, {
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
+            },
             method: `${method}`,
             body: method.indexOf('GET', 'DELETE') ? JSON.stringify({
                 ...body
@@ -24,8 +28,8 @@ class ApiMain {
         })
     }
 
-    saveProfile (data)  {
-        return this._fetchRequest('/users/me', 'PATCH', data)
+    saveProfile (data, token)  {
+        return this._fetchRequest('/users/me', 'PATCH', data, token)
     }
 
     likedMovie(movie) {

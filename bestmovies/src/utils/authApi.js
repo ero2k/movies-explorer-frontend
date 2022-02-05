@@ -31,13 +31,13 @@ export const getEmail = (token) => {
 };
 
 
-// export const authorize = ({password, email}) => {
-//     return fetch(`${URL_LOCALDB}/signin`, {
-//         headers,
-//         method: 'POST',
-//         // credentials: 'include',
-//         body: JSON.stringify({password, email}),
-//     })
-//         .then(res => checkResponse(res));
-// };
-//
+export const authorize = ({password, email}) => {
+    return fetch(`${URL_LOCALDB}/signin`, {
+        headers:{
+            ...headers
+        },
+        method: 'POST',
+        body: JSON.stringify({password, email}),
+    })
+        .then(res => checkResponse(res));
+};

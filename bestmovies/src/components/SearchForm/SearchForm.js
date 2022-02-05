@@ -2,20 +2,13 @@ import React, {useState} from "react";
 import "./SearchForm.css"
 
 function SearchForm(props) {
-    const [searchInput, setSearchInput] = useState('')
-
-    const handleInput = (e)=>{
-        setSearchInput(e.target.value)
-    }
-
-
 
     return (
         <section className="search-form max-width">
-            <form className="search-form__form" action="">
+            <form className="search-form__form" action="" onSubmit={props.onSubmit}>
                     <div className="search-form__search-icon"></div>
-                    <input className="search-form__input" value={searchInput} onChange={handleInput} placeholder="Фильм" type="text" required/>
-                    <button className={`search-form__btn-submit ${searchInput.length === 0 ? 'disabled' : ''}`}></button>
+                    <input className="search-form__input" value={props.value} onChange={props.onChange} placeholder="Фильм" type="text" required/>
+                    <button className={`search-form__btn-submit ${props.value.length === 0 ? 'disabled' : ''}`}></button>
                     <span className='search-form__border'></span>
                 <div className='search-form__section-option'>
                     <label htmlFor="search-form__checkbox" className="search-form__label">
