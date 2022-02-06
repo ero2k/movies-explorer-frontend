@@ -7,10 +7,11 @@ const Card = (props) => {
     const minutes = props.card.duration % 60;
     const hours = (props.card.duration - minutes) / 60; // время в минутах
     const time = `${hours < 10 ? '0' + hours : hours}ч ${minutes < 10 ? '0' + minutes : minutes}м`
-    const movieCardButtonStyle = props.card._id === 0 ? 'movie__card-button btn-heart' : `movie__card-button btn-heart-active`
+    const movieCardButtonStyle = props.isLiked ? `movie__card-button btn-heart-active` : 'movie__card-button btn-heart'
     const savedMovieCardButtonStyle = 'movie__card-button btn-unliked'
-    const urlImgMovie = `https://api.nomoreparties.co${props.card.image.url}`
-    const thumbnailUrl = `https://api.nomoreparties.co${props.card.image.formats.thumbnail.url}`
+    const urlImgMovie = !!props.card.image.url ? `https://api.nomoreparties.co${props.card.image.url}` : props.card.image
+    const thumbnailUrl = !!props.card.image.formats ? `https://api.nomoreparties.co${props.card.image.formats.thumbnail.url}` : `${props.card.thumbnail}`
+    const trailer = !!props.card.trailerLink ? props.card.trailerLink : props.card.trailer
 
     const movieDataForSave = {
         'country': props.card.country,
@@ -26,22 +27,41 @@ const Card = (props) => {
         'nameEN': props.card.nameEN,
     }
 
-    const buttonCardStyle = props.page === 'movies' ? movieCardButtonStyle : savedMovieCardButtonStyle
-    console.log(movieDataForSave)
 
-    const likeMovie = () => {
-       return  apiMain.likedMovie({...movieDataForSave}, localStorage.getItem('jwt'))
+    function getIdSavedMovies(card) {
+        const movie = props.saveMovies.filter(saveMovie => saveMovie.movieId === card)
+        console.log(props.saveMovies)
+        return movie[0]._id
     }
+
+    console.log(props)
+
+    const handleLikeMovie = () => {
+        let idMovieInLocalDB = ''
+        if (!props.isLiked) {
+            return props.likedMovie(movieDataForSave, localStorage.getItem('jwt'))
+        }
+
+        if (props.page === 'movies') {
+            idMovieInLocalDB = getIdSavedMovies(props.card.id)
+        } else {
+            idMovieInLocalDB = props.card._id
+        }
+
+        return props.onDeleteMovie(idMovieInLocalDB, localStorage.getItem('jwt'))
+    }
+
+    const buttonCardStyle = props.page === 'movies' ? movieCardButtonStyle : savedMovieCardButtonStyle
 
     return (
         <li className="movie">
             <img src={urlImgMovie} className="movie__photo" alt={props.card.name}
-                 onClick={() => props.onClick(props.card)}/>
+                 onClick={() => window.open(trailer)}/>
             <div className="movie__description">
                 <h2 className="movie__title">
                     {props.card.nameRU}
                 </h2>
-                <button onClick={likeMovie} type="button" className={buttonCardStyle}/>
+                <button onClick={handleLikeMovie} type="button" className={buttonCardStyle}/>
             </div>
             <p className="movie__duration">{time}</p>
         </li>

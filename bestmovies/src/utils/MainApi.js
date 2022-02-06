@@ -37,8 +37,12 @@ class ApiMain {
     }
 
     likedMovie(movie, token) {
-        console.log(URL_LOCALDB)
         return this._fetchRequest(`/movies`, 'POST', movie, token)
+    }
+
+    deleteMovie(movieId, token) {
+        console.log(movieId)
+        return this._fetchRequest(`/movies/${movieId}`, 'DELETE', '', token)
     }
 }
 

@@ -33,6 +33,9 @@ function App() {
     const [currentUser, setCurrentUser] = useState({})
     const [allMoviesArray, setAllMoviesArray] = useState([])
     const [savedMoviesArray, setSavedMoviesArray] = useState([])
+    const [isShortMovie, setIsShortMovie] = useState(false)
+
+
     const history = useHistory();
 
     const closeMenu = () => {
@@ -118,32 +121,77 @@ function App() {
         history.push('/signin');
     };
 
-    const getAllMovies = async (e) =>{
-            e.preventDefault()
-            try {
-                const movies = await apiMovies.getInitialCards()
-                await localStorage.setItem('movies', JSON.stringify(movies))
-                setAllMoviesArray(JSON.parse(localStorage.getItem('movies')))
-            } catch (error) {
-                console.log(error)
-            }
+    function handleShortMovie () {
+        setIsShortMovie(!isShortMovie)
+    }
+
+
+    const getAllMovies = async (e) => {
+        e.preventDefault()
+        try {
+            const movies = await apiMovies.getInitialCards()
+            await localStorage.setItem('movies', JSON.stringify(movies))
+
+            // const filterByPhrase = props.savedMovies.filter(movie => movie.nameRU.toLowerCase().trim().includes(searchPhrase.toLowerCase()))
+            //
+            // if(!isShortMovie){
+            //     setMoviesFiltered(filterByPhrase)
+            //     return
+            // }
+            //
+            // filterByPhrase.filter(movie => console.log(movie.duration))
+            //
+            // setMoviesFiltered(filterByPhrase.filter(movie => movie.duration < 41))
+
+
+            setAllMoviesArray(JSON.parse(localStorage.getItem('movies')))
+        } catch (error) {
+            console.log(error)
         }
+    }
 
-        useEffect(async () => {
-            try {
-                const savedMovies = await apiMain.getSavedMovies(localStorage.getItem('jwt'))
-                await localStorage.setItem('savedMovies', JSON.stringify(savedMovies))
-                setSavedMoviesArray(JSON.parse(localStorage.getItem('savedMovies')))
-                console.log(savedMovies)
-            } catch (error) {
-                console.log(error)
-            }
-        }, [currentUser])
+    const getSavedMovies = async () => {
+        try {
+            localStorage.removeItem('savedMovies')
 
-useEffect(() => {
-    setAllMoviesArray(localStorage.getItem('movies'))
-}, [])
- // console.log(JSON.parse(allMoviesArray))
+            const savedMovies = await apiMain.getSavedMovies(localStorage.getItem('jwt'))
+            await localStorage.setItem('savedMovies', JSON.stringify(savedMovies))
+            setSavedMoviesArray(JSON.parse(localStorage.getItem('savedMovies')))
+            console.log(savedMovies)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(async () => {
+        await getSavedMovies()
+    }, [currentUser])
+
+    // useEffect(() => {
+    //     setAllMoviesArray([])
+    // },[])
+
+    useEffect(() => {
+        setAllMoviesArray(JSON.parse(localStorage.getItem('movies')))
+    }, [])
+
+    const likeMovie = async (movieData) => {
+        try {
+            await apiMain.likedMovie({...movieData}, localStorage.getItem('jwt'))
+            await getSavedMovies()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const deleteMovieFromSave = async (idCard) => {
+        try {
+            await apiMain.deleteMovie(idCard, localStorage.getItem('jwt'))
+            await getSavedMovies()
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return (
         <CurrentUserContext.Provider value={currentUser}>
@@ -156,13 +204,17 @@ useEffect(() => {
                         <Footer/>
                     </Route>
 
-                    <ProtectedRoute savedMovies={savedMoviesArray} allMovies={allMoviesArray} submitSearch={getAllMovies} onOpen={openMenu} page={'movies'} isLoggedIn={isLoggedIn}
+                    <ProtectedRoute likedMovie={likeMovie} deleteMovie={deleteMovieFromSave}
+                                    savedMovies={savedMoviesArray} allMovies={allMoviesArray}
+                                    submitSearch={getAllMovies} onOpen={openMenu} page={'movies'}
+                                    isLoggedIn={isLoggedIn}
                                     path="/movies"
                                     component={Movies}>
                     </ProtectedRoute>
 
-                    <ProtectedRoute component={SavedMovies} isLoggedIn={isLoggedIn} path="/saved-movies"
-                                    onOpen={openMenu} page={'saved-movies'}>
+                    <ProtectedRoute isShortMovie={isShortMovie} handleCheckbox={handleShortMovie} likedMovie={likeMovie} savedMovies={savedMoviesArray} component={SavedMovies}
+                                    isLoggedIn={isLoggedIn} path="/saved-movies"
+                                    onOpen={openMenu} page={'saved-movies'} deleteMovie={deleteMovieFromSave}>
                     </ProtectedRoute>
 
                     <ProtectedRoute component={Profile} path="/profile" onOpen={openMenu} isLoggedIn={isLoggedIn}

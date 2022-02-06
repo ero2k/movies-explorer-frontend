@@ -1,7 +1,9 @@
-import React, {useState} from "react";
+import React from "react";
 import "./SearchForm.css"
 
 function SearchForm(props) {
+
+// console.log(props.checked)
 
     return (
         <section className="search-form max-width">
@@ -12,7 +14,7 @@ function SearchForm(props) {
                     <span className='search-form__border'></span>
                 <div className='search-form__section-option'>
                     <label htmlFor="search-form__checkbox" className="search-form__label">
-                        <input type="checkbox" id="search-form__checkbox" className='search-form__checkbox'/>
+                        <input type="checkbox" checked={props.checked} onChange={props.onChangeChecked} id="search-form__checkbox" className='search-form__checkbox'/>
                         <span className='search-form__checkbox-switch'></span>
                     </label>
                     <p className='search-form__paragraph'>Короткометражки</p>

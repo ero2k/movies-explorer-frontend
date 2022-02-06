@@ -1,73 +1,43 @@
 import React, {useEffect, useState} from "react";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList"
-import {LOADED_MOVIES, savedCards} from "../../utils/constants";
-import apiMovies from "../../utils/MoviesApi";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 
+
 function SavedMovies(props) {
-    const [moviesArray, setMoviesArray] = React.useState([])
-    const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
-    const [searchPhrase, setSearchPhrase] = React.useState('')
+    const [moviesFiltered, setMoviesFiltered] = useState([])
+    const [searchPhrase, setSearchPhrase] = useState('')
 
     function handleInputChange(e) {
         setSearchPhrase(e.target.value)
     }
 
-    function getCurrentDeviceScheme(windowWidth) {
-        if (windowWidth > 1279) {
-            return LOADED_MOVIES.desktop
-        } else if (windowWidth > 479) {
-            return LOADED_MOVIES.tablet
-        } else {
-            return LOADED_MOVIES.mobile
-        }
-    }
-
-    async function handleMoviesArray(e) {
+    function handleSubmit(e){
         e.preventDefault()
-        try {
-            const movies = await apiMovies.getInitialCards()
-            await localStorage.setItem('movies', JSON.stringify(movies))
-            setMoviesArray(JSON.parse(localStorage.getItem('movies')))
-        } catch (error) {
-            console.log(error)
+        const filterByPhrase = props.savedMovies.filter(movie => movie.nameRU.toLowerCase().trim().includes(searchPhrase.toLowerCase()))
+
+        if(!props.isShortMovie){
+            setMoviesFiltered(filterByPhrase)
+            return
         }
+
+       setMoviesFiltered(filterByPhrase.filter(movie => movie.duration < 41))
     }
 
     useEffect(() => {
-        if (!!localStorage.movies) {
-            setMoviesArray(JSON.parse(localStorage.getItem('movies')))
-        }
-    }, [])
+        setMoviesFiltered(props.savedMovies)
+    }, [props.savedMovies])
 
-    console.log(localStorage.movies)
-
-    function getWindowDimensions() {
-        const {innerWidth: width} = window;
-        return {
-            width
-        };
-    }
-
-    useEffect(() => {
-        function handleResize() {
-            setWindowDimensions(getWindowDimensions());
-        }
-
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    console.log(moviesArray)
 
     return (
         <>
             <Header onOpen={props.onOpen} isLoggedIn={props.isLoggedIn} page={props.page}/>
             <main>
-                <SearchForm onSubmit={handleMoviesArray} onChange={handleInputChange} value={searchPhrase}/>
-                <MoviesCardList cards={savedCards} schemeDevice={{'totalCards': savedCards.length}}/>
+                <SearchForm onSubmit={handleSubmit} onChange={handleInputChange} value={searchPhrase} checked={props.isShortMovie} onChangeChecked={props.handleCheckbox}/>
+                <MoviesCardList deleteMovie={props.deleteMovie} likedMovie={props.likedMovie} isLiked={true}
+                                savedMovies={moviesFiltered} schemeDevice={{'totalCards': props.savedMovies.length}}
+                               />
             </main>
             <Footer/>
         </>
