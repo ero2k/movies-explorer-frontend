@@ -28,13 +28,17 @@ class ApiMain {
         })
     }
 
+    getSavedMovies (token)  {
+        return this._fetchRequest('/movies', 'GET', '', token)
+    }
+
     saveProfile (data, token)  {
         return this._fetchRequest('/users/me', 'PATCH', data, token)
     }
 
-    likedMovie(movie) {
+    likedMovie(movie, token) {
         console.log(URL_LOCALDB)
-        return this._fetchRequest(`/movies`, 'POST', movie)
+        return this._fetchRequest(`/movies`, 'POST', movie, token)
     }
 }
 

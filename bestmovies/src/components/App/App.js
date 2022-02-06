@@ -19,6 +19,7 @@ import apiMain from "../../utils/MainApi"
 import {CurrentUserContext} from '../../contexts/CurrentUserContext'
 import {URL_LOCALDB} from "../../utils/constants";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import apiMovies from "../../utils/MoviesApi";
 
 document.documentElement.lang = 'ru'
 
@@ -30,7 +31,8 @@ function App() {
     const [message, setMessage] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [currentUser, setCurrentUser] = useState({})
-
+    const [allMoviesArray, setAllMoviesArray] = useState([])
+    const [savedMoviesArray, setSavedMoviesArray] = useState([])
     const history = useHistory();
 
     const closeMenu = () => {
@@ -40,7 +42,6 @@ function App() {
         setCloseMenu(true)
     }
 
-
     const tokenCheck = () => {
         const jwt = localStorage.getItem('jwt')
 
@@ -49,7 +50,7 @@ function App() {
         }
         getEmail(jwt)
             .then(data => {
-                setCurrentUser({'email': data[0].email, 'name': data[0].name})
+                setCurrentUser(data[0])
                 setIsLoggedIn(true);
             })
             .catch(err => {
@@ -59,6 +60,7 @@ function App() {
     };
 
     useEffect(() => {
+        console.log('!!')
         tokenCheck();
     }, [isLoggedIn]);
 
@@ -110,17 +112,38 @@ function App() {
         })
     }
 
-    function handleCardLike(data) {
-
-        return apiMain.likedMovie()
-
-    }
-
     const onLogout = () => {
         setIsLoggedIn(false);
         localStorage.removeItem('jwt');
         history.push('/signin');
     };
+
+    const getAllMovies = async (e) =>{
+            e.preventDefault()
+            try {
+                const movies = await apiMovies.getInitialCards()
+                await localStorage.setItem('movies', JSON.stringify(movies))
+                setAllMoviesArray(JSON.parse(localStorage.getItem('movies')))
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        useEffect(async () => {
+            try {
+                const savedMovies = await apiMain.getSavedMovies(localStorage.getItem('jwt'))
+                await localStorage.setItem('savedMovies', JSON.stringify(savedMovies))
+                setSavedMoviesArray(JSON.parse(localStorage.getItem('savedMovies')))
+                console.log(savedMovies)
+            } catch (error) {
+                console.log(error)
+            }
+        }, [currentUser])
+
+useEffect(() => {
+    setAllMoviesArray(localStorage.getItem('movies'))
+}, [])
+ // console.log(JSON.parse(allMoviesArray))
 
     return (
         <CurrentUserContext.Provider value={currentUser}>
@@ -133,7 +156,7 @@ function App() {
                         <Footer/>
                     </Route>
 
-                    <ProtectedRoute tokenCheck={tokenCheck} onOpen={openMenu} page={'movies'} isLoggedIn={isLoggedIn}
+                    <ProtectedRoute savedMovies={savedMoviesArray} allMovies={allMoviesArray} submitSearch={getAllMovies} onOpen={openMenu} page={'movies'} isLoggedIn={isLoggedIn}
                                     path="/movies"
                                     component={Movies}>
                     </ProtectedRoute>

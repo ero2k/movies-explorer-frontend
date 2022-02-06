@@ -1,4 +1,3 @@
-// import {CurrentUserContext} from '../contexts/CurrentUserContext'
 import React from "react";
 import "./MoviesCard.css"
 import apiMain from "../../utils/MainApi";
@@ -8,16 +7,30 @@ const Card = (props) => {
     const minutes = props.card.duration % 60;
     const hours = (props.card.duration - minutes) / 60; // время в минутах
     const time = `${hours < 10 ? '0' + hours : hours}ч ${minutes < 10 ? '0' + minutes : minutes}м`
-    const movieCardButtonStyle = props.card._id % 2 === 0 ? 'movie__card-button btn-heart' : `movie__card-button btn-heart-active`
+    const movieCardButtonStyle = props.card._id === 0 ? 'movie__card-button btn-heart' : `movie__card-button btn-heart-active`
     const savedMovieCardButtonStyle = 'movie__card-button btn-unliked'
-    const currentPath = window.location.pathname
-    const urlImgMovie = `https://api.nomoreparties.co/${props.card.image.url}`
+    const urlImgMovie = `https://api.nomoreparties.co${props.card.image.url}`
+    const thumbnailUrl = `https://api.nomoreparties.co${props.card.image.formats.thumbnail.url}`
 
-    const buttonCardStyle = currentPath === '/movies' ? movieCardButtonStyle : savedMovieCardButtonStyle
-    console.log(props.card)
+    const movieDataForSave = {
+        'country': props.card.country,
+        'director': props.card.director,
+        'duration': props.card.duration,
+        'year': props.card.year,
+        'description': props.card.description,
+        'image': `https://api.nomoreparties.co${props.card.image.url}`,
+        'trailer': props.card.trailerLink,
+        'thumbnail': `${thumbnailUrl}`,
+        'movieId': props.card.id,
+        'nameRU': props.card.nameRU,
+        'nameEN': props.card.nameEN,
+    }
+
+    const buttonCardStyle = props.page === 'movies' ? movieCardButtonStyle : savedMovieCardButtonStyle
+    console.log(movieDataForSave)
 
     const likeMovie = () => {
-       return  apiMain.likedMovie({...props.card})
+       return  apiMain.likedMovie({...movieDataForSave}, localStorage.getItem('jwt'))
     }
 
     return (

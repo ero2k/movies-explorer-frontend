@@ -8,11 +8,9 @@ import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 
 function Movies(props) {
-    const [moviesArray, setMoviesArray] = React.useState([])
+    // const [moviesArray, setMoviesArray] = React.useState([])
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
     const [searchPhrase, setSearchPhrase] = React.useState('')
-
-    console.log(props)
 
     function handleInputChange(e) {
         setSearchPhrase(e.target.value)
@@ -28,24 +26,24 @@ function Movies(props) {
         }
     }
 
-    async function handleMoviesArray(e) {
-        e.preventDefault()
-        try {
-            const movies = await apiMovies.getInitialCards()
-            await localStorage.setItem('movies', JSON.stringify(movies))
-            setMoviesArray(JSON.parse(localStorage.getItem('movies')))
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    // async function handleMoviesArray(e) {
+    //     e.preventDefault()
+    //     try {
+    //         const movies = await apiMovies.getInitialCards()
+    //         await localStorage.setItem('movies', JSON.stringify(movies))
+    //         setMoviesArray(JSON.parse(localStorage.getItem('movies')))
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
 
-    useEffect(() => {
-        if (!!localStorage.movies) {
-            setMoviesArray(JSON.parse(localStorage.getItem('movies')))
-        }
-    }, [])
+    // useEffect(() => {
+    //     if (!!localStorage.movies) {
+    //         setMoviesArray(JSON.parse(localStorage.getItem('movies')))
+    //     }
+    // }, [])
 
-    console.log(localStorage.movies)
+    console.log(JSON.parse(localStorage.movies))
 
     function getWindowDimensions() {
         const {innerWidth: width} = window;
@@ -63,13 +61,15 @@ function Movies(props) {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    console.log()
+
 
     return (
         <>
             <Header onOpen={props.onOpen} isLoggedIn={props.isLoggedIn} page={props.page}/>
             <main>
-                <SearchForm onSubmit={handleMoviesArray} onChange={handleInputChange} value={searchPhrase}/>
-                <MoviesCardList cards={moviesArray} size={windowDimensions}
+                <SearchForm onSubmit={props.submitSearch} onChange={handleInputChange} value={searchPhrase}/>
+                <MoviesCardList page={'movies'} savedMovies={props.savedMovies} allMovies={props.allMovies} size={windowDimensions} page='movies'
                                 schemeDevice={getCurrentDeviceScheme(windowDimensions.width)}/>
             </main>
             <Footer/>
