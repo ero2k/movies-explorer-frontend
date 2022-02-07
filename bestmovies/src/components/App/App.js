@@ -5,7 +5,7 @@ import Main from "../Main/Main"
 import Header from "../Header/Header"
 import Footer from "../Footer/Footer";
 import Movies from "../Movies/Movies";
-import {Route, Switch, useHistory} from 'react-router-dom';
+import {Route, Switch, useHistory, useLocation} from 'react-router-dom';
 import SavedMovies from "../SavedMovies/SavedMovies";
 import Profile from "../Profile/Profile";
 import Register from "../Register/Register";
@@ -37,7 +37,7 @@ function App() {
 
     const [isShortMovie, setIsShortMovie] = useState(false)
     const [searchPhrase, setSearchPhrase] = useState('')
-
+    const pathRequestSource = useLocation()
 
     const history = useHistory();
 
@@ -54,10 +54,12 @@ function App() {
         if (!jwt) {
             return false;
         }
+
         getEmail(jwt)
             .then(data => {
                 setCurrentUser(data[0])
                 setIsLoggedIn(true);
+                history.push(pathRequestSource)
             })
             .catch(err => {
                 setIsLoggedIn(false);
@@ -66,9 +68,8 @@ function App() {
     };
 
     useEffect(() => {
-        console.log('!!')
         tokenCheck();
-    }, [isLoggedIn]);
+    }, []);
 
     const onRegister = (data) => {
         setMessage('')
@@ -135,7 +136,6 @@ function App() {
 
     const filteredMovies = (moviesForFiltered) => {
         const filterByPhrase = moviesForFiltered.filter(movie => movie.nameRU.toLowerCase().trim().includes(searchPhrase.toLowerCase().trim()))
-        console.log(searchPhrase, isShortMovie)
         if (!isShortMovie) {
             return filterByPhrase
         }
@@ -151,11 +151,16 @@ function App() {
 
     useEffect(() => {
         setSavedMoviesFiltered(filteredMovies(savedMoviesArray))
+
     }, [savedMoviesArray])
 
     const handleSubmitSearchForm = (e) => {
         e.preventDefault()
         setSavedMoviesFiltered(filteredMovies(savedMoviesArray))
+
+        if (savedMoviesFiltered.length === 0) {
+            setMessage('Ничего не найдено')
+        }
     }
 
     const getAllMovies = async (e) => {
@@ -189,11 +194,14 @@ function App() {
     }
 
     useEffect(() => {
-        try {
-            getSavedMovies()
-        } catch (error) {
-            console.log(error)
+        if(!!currentUser.email){
+            try {
+                getSavedMovies()
+            } catch (error) {
+                console.log(error)
+            }
         }
+
     }, [currentUser])
 
     const likeMovie = async (movieData) => {
@@ -242,7 +250,9 @@ function App() {
                     </ProtectedRoute>
 
                     <ProtectedRoute isShortMovie={isShortMovie} handleCheckbox={handleShortMovie} likedMovie={likeMovie}
-                                    filteredMovies={savedMoviesFiltered} component={SavedMovies}
+                                    filteredMovies={savedMoviesFiltered} setSavedMovies={setSavedMoviesFiltered}
+                                    component={SavedMovies} savedMovies={savedMoviesArray}
+                                    message={message} setMessage={setMessage}
                                     isLoggedIn={isLoggedIn} path="/saved-movies" searchPhrase={searchPhrase}
                                     handleInput={setSearchPhrase} onSubmitSearchForm={handleSubmitSearchForm}
                                     onOpen={openMenu} page={'saved-movies'} deleteMovie={deleteMovieFromSave}>

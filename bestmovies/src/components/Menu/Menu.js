@@ -5,7 +5,6 @@ import closeIcon from "../../images/main/menu/icon-close.png"
 
 function Menu(props) {
     const menuStyle = !props.isClose ? "menu" : "menu menu-open"
-    console.log(props.isClose)
 
     return (
         <div className={menuStyle} >/
