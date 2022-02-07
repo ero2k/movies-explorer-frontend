@@ -6,35 +6,35 @@ import {useEffect, useState} from "react";
 function MoviesCardList(props) {
     const [moviesToShow, setMoviesToShow] = useState([])
     const [buttonMoreStyle, setButtonMoreStyle] = useState('')
+
     const idSavedMovies = Object.values(props.savedMovies).map(savedMovie => savedMovie.movieId)
 
     useEffect(() => {
         if(props.page === 'movies'){
-            console.log(props.allMovies.length > 0 || props.allMovies.length > moviesToShow.length)
-            if(props.allMovies.length > 0 && props.allMovies.length > moviesToShow.length){
+
+            if(props.filteredMovies.length > 0 && props.filteredMovies.length > moviesToShow.length){
                 setButtonMoreStyle ("movies-list__button")
                 return
             }
         }
        setButtonMoreStyle("movies-list__button movies-list__button-hidden")
-    }, [moviesToShow])
+    }, [moviesToShow, props.filteredMovies.length, moviesToShow.length, props.page])
 
     useEffect(() => {
-        if (!!props.allMovies){
-            setMoviesToShow(Object.values(props.allMovies).slice(0, props.schemeDevice.totalCards))
+        if (!!props.filteredMovies){
+            setMoviesToShow(Object.values(props.filteredMovies).slice(0, props.schemeDevice.totalCards))
         }
-    }, [props.allMovies, props.schemeDevice.totalCards])
+    }, [props.filteredMovies, props.schemeDevice.totalCards])
 
     useEffect(() => {
-        if (!props.allMovies) {
+        if (!props.filteredMovies) {
             setMoviesToShow(Object.values(props.savedMovies).slice(0, props.schemeDevice.totalCards))
-            console.log(props.savedMovies)
         }
-    }, [props.savedMovies])
+    }, [props.savedMovies, props.filteredMovies, props.schemeDevice.totalCards])
 
     function addMoreMovies() {
         const totalMoviesToShow = moviesToShow.length + props.schemeDevice.download
-        setMoviesToShow(Object.values(props.allMovies).slice(0, totalMoviesToShow))
+        setMoviesToShow(Object.values(props.filteredMovies).slice(0, totalMoviesToShow))
     }
 
     return (

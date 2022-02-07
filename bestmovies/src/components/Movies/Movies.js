@@ -5,14 +5,14 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList"
 import {LOADED_MOVIES} from "../../utils/constants";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
+import Preloader from "../Preloader/Preloader";
+
 
 function Movies(props) {
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
-    const [searchPhrase, setSearchPhrase] = useState('')
-    const [moviesFiltered, setMoviesFiltered] = useState([])
 
     function handleInputChange(e) {
-        setSearchPhrase(e.target.value)
+        props.handleInput(e.target.value)
     }
 
     function getCurrentDeviceScheme(windowWidth) {
@@ -41,25 +41,24 @@ function Movies(props) {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-
-    useEffect(() => {
-        if(props.allMovies){
-        setMoviesFiltered(props.allMovies.filter(movie =>
-            movie.nameRU.includes(searchPhrase)
-        ))}
-    }, [props.allMovies])
-
-    console.log(moviesFiltered)
-
     return (
         <>
             <Header onOpen={props.onOpen} isLoggedIn={props.isLoggedIn} page={props.page}/>
             <main>
-                <SearchForm onSubmit={props.submitSearch} onChange={handleInputChange} value={searchPhrase}/>
-                <MoviesCardList savedMovies={props.savedMovies} deleteMovie={props.deleteMovie}
-                                allMovies={moviesFiltered} size={windowDimensions} page='movies'
-                                schemeDevice={getCurrentDeviceScheme(windowDimensions.width)}
-                                likedMovie={props.likedMovie}/>
+                <SearchForm onSubmit={props.submitSearch} onChange={handleInputChange} value={props.searchPhrase}
+                            checked={props.isShortMovie} onChangeChecked={props.handleCheckbox}/>
+
+                { !props.isOpenPreloader ?
+                        props.filteredMovies.length > 0 ?
+                    <MoviesCardList savedMovies={props.savedMovies} deleteMovie={props.deleteMovie}
+                                    filteredMovies={props.filteredMovies} size={windowDimensions} page='movies'
+                                    schemeDevice={getCurrentDeviceScheme(windowDimensions.width)}
+                                    likedMovie={props.likedMovie}/>
+                            : 'Ничего не найдено'
+                    :
+                    <Preloader isOpen={props.isOpenPreloader}/>
+                }
+
             </main>
             <Footer/>
         </>

@@ -1,7 +1,5 @@
 import React from "react";
 import "./MoviesCard.css"
-import apiMain from "../../utils/MainApi";
-
 
 const Card = (props) => {
     const minutes = props.card.duration % 60;
@@ -34,7 +32,6 @@ const Card = (props) => {
         return movie[0]._id
     }
 
-    console.log(props)
 
     const handleLikeMovie = () => {
         let idMovieInLocalDB = ''

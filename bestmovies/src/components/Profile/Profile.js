@@ -28,7 +28,7 @@ function Profile(props) {
             setName(currentUser.name);
             setEmail(currentUser.email);
         }
-    }, [currentUser]);
+    }, [currentUser, currentUser.name, currentUser.email]);
 
     useEffect(() => {
         if (currentUser.name !== name || currentUser.email !== email) {
@@ -36,7 +36,7 @@ function Profile(props) {
         } else {
             setIsChangedForm(false)
         }
-    }, [name, email])
+    }, [name, email, currentUser.name, currentUser.email])
 
     useEffect(() => {
         if (!emailError && !nameError && isChangedForm) {

@@ -5,7 +5,6 @@ import Main from "../Main/Main"
 import Header from "../Header/Header"
 import Footer from "../Footer/Footer";
 import Movies from "../Movies/Movies";
-import Preloader from "../Preloader/Preloader";
 import {Route, Switch, useHistory} from 'react-router-dom';
 import SavedMovies from "../SavedMovies/SavedMovies";
 import Profile from "../Profile/Profile";
@@ -17,7 +16,6 @@ import {useState, useEffect} from 'react';
 import {register, getEmail, authorize} from "../../utils/authApi";
 import apiMain from "../../utils/MainApi"
 import {CurrentUserContext} from '../../contexts/CurrentUserContext'
-import {URL_LOCALDB} from "../../utils/constants";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import apiMovies from "../../utils/MoviesApi";
 
@@ -31,9 +29,14 @@ function App() {
     const [message, setMessage] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [currentUser, setCurrentUser] = useState({})
+
     const [allMoviesArray, setAllMoviesArray] = useState([])
     const [savedMoviesArray, setSavedMoviesArray] = useState([])
+    const [allMoviesFiltered, setAllMoviesFiltered] = useState([])
+    const [savedMoviesFiltered, setSavedMoviesFiltered] = useState([])
+
     const [isShortMovie, setIsShortMovie] = useState(false)
+    const [searchPhrase, setSearchPhrase] = useState('')
 
 
     const history = useHistory();
@@ -68,6 +71,8 @@ function App() {
     }, [isLoggedIn]);
 
     const onRegister = (data) => {
+        setMessage('')
+
         return register(data)
             .then(({token}) => {
                     localStorage.setItem('jwt', token)
@@ -88,6 +93,8 @@ function App() {
     };
 
     const onLogin = (data) => {
+        setMessage('')
+
         return authorize(data)
             .then(({token}) => {
                 localStorage.setItem('jwt', token);
@@ -98,11 +105,12 @@ function App() {
                     return setMessage("Неверный email или пароль");
                 }
                 setMessage("При авторизации произошла ошибка");
-
             });
     };
 
     function handleUpdateUser(data) {
+        setMessage('')
+
         return apiMain.saveProfile(data, localStorage.getItem('jwt')).then((reqdata) => {
             console.log(reqdata)
             setCurrentUser({name: reqdata.name, email: reqdata.email})
@@ -121,30 +129,42 @@ function App() {
         history.push('/signin');
     };
 
-    function handleShortMovie () {
+    function handleShortMovie() {
         setIsShortMovie(!isShortMovie)
+        console.log('!')
     }
 
+    const filteredMovies = (moviesForFiltered) => {
+        const filterByPhrase = moviesForFiltered.filter(movie => movie.nameRU.toLowerCase().trim().includes(searchPhrase.toLowerCase().trim()))
+        console.log(searchPhrase, isShortMovie)
+        if (!isShortMovie) {
+            return filterByPhrase
+        }
+        return filterByPhrase.filter(movie => movie.duration < 41)
+    }
+
+    useEffect(() => {
+        setAllMoviesFiltered(filteredMovies(allMoviesArray))
+    }, [allMoviesArray])
+
+    useEffect(() => {
+        setSavedMoviesFiltered(filteredMovies(savedMoviesArray))
+    }, [savedMoviesArray])
+
+    const handleSubmitSearchForm = (e) => {
+        e.preventDefault()
+        setSavedMoviesFiltered(filteredMovies(savedMoviesArray))
+    }
 
     const getAllMovies = async (e) => {
         e.preventDefault()
         try {
+            setOpenPreloader(true)
             const movies = await apiMovies.getInitialCards()
             await localStorage.setItem('movies', JSON.stringify(movies))
-
-            // const filterByPhrase = props.savedMovies.filter(movie => movie.nameRU.toLowerCase().trim().includes(searchPhrase.toLowerCase()))
-            //
-            // if(!isShortMovie){
-            //     setMoviesFiltered(filterByPhrase)
-            //     return
-            // }
-            //
-            // filterByPhrase.filter(movie => console.log(movie.duration))
-            //
-            // setMoviesFiltered(filterByPhrase.filter(movie => movie.duration < 41))
-
-
             setAllMoviesArray(JSON.parse(localStorage.getItem('movies')))
+            setOpenPreloader(false)
+
         } catch (error) {
             console.log(error)
         }
@@ -163,17 +183,18 @@ function App() {
         }
     }
 
-    useEffect(async () => {
-        await getSavedMovies()
+    useEffect(() => {
+        try{
+            getSavedMovies()
+        }catch (error){
+            console.log(error)
+        }
     }, [currentUser])
 
-    // useEffect(() => {
-    //     setAllMoviesArray([])
-    // },[])
 
-    useEffect(() => {
-        setAllMoviesArray(JSON.parse(localStorage.getItem('movies')))
-    }, [])
+    // useEffect(() => {
+    //     setAllMoviesArray(JSON.parse(localStorage.getItem('movies')))
+    // }, [])
 
     const likeMovie = async (movieData) => {
         try {
@@ -204,16 +225,20 @@ function App() {
                         <Footer/>
                     </Route>
 
-                    <ProtectedRoute likedMovie={likeMovie} deleteMovie={deleteMovieFromSave}
-                                    savedMovies={savedMoviesArray} allMovies={allMoviesArray}
-                                    submitSearch={getAllMovies} onOpen={openMenu} page={'movies'}
+                    <ProtectedRoute isOpenPreloader={isOpenPreloader} likedMovie={likeMovie} handleCheckbox={handleShortMovie}
+                                    deleteMovie={deleteMovieFromSave}
+                                    savedMovies={savedMoviesArray} filteredMovies={allMoviesFiltered}
+                                    searchPhrase={searchPhrase} handleInput={setSearchPhrase}
+                                    submitSearch={getAllMovies} onOpen={openMenu}
                                     isLoggedIn={isLoggedIn}
                                     path="/movies"
                                     component={Movies}>
                     </ProtectedRoute>
 
-                    <ProtectedRoute isShortMovie={isShortMovie} handleCheckbox={handleShortMovie} likedMovie={likeMovie} savedMovies={savedMoviesArray} component={SavedMovies}
-                                    isLoggedIn={isLoggedIn} path="/saved-movies"
+                    <ProtectedRoute isShortMovie={isShortMovie} handleCheckbox={handleShortMovie} likedMovie={likeMovie}
+                                    filteredMovies={savedMoviesFiltered} component={SavedMovies}
+                                    isLoggedIn={isLoggedIn} path="/saved-movies" searchPhrase={searchPhrase}
+                                    handleInput={setSearchPhrase} onSubmitSearchForm={handleSubmitSearchForm}
                                     onOpen={openMenu} page={'saved-movies'} deleteMovie={deleteMovieFromSave}>
                     </ProtectedRoute>
 
@@ -235,7 +260,7 @@ function App() {
                     </Route>
 
                 </Switch>
-                <Preloader isOpen={isOpenPreloader}/>
+                {/*<Preloader isOpen={isOpenPreloader}/>*/}
                 <Menu onClose={closeMenu} isClose={isCloseMenu}/>
             </div>
         </CurrentUserContext.Provider>
