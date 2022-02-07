@@ -10,6 +10,8 @@ function SavedMovies(props) {
         props.handleInput(e.target.value)
     }
 
+
+
     return (
         <>
             <Header onOpen={props.onOpen} isLoggedIn={props.isLoggedIn} page={props.page}/>

@@ -14,6 +14,10 @@ function Profile(props) {
     const [formValid, setFormValid] = useState(false);
     const [isChangedForm, setIsChangedForm] = useState(false)
 
+    useEffect(() => {
+        props.setMessage('')
+    }, [])
+
     function handleSubmit(e) {
         e.preventDefault();
         props.onUpdateUser({

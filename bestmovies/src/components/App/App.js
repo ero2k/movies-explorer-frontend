@@ -131,7 +131,6 @@ function App() {
 
     function handleShortMovie() {
         setIsShortMovie(!isShortMovie)
-        console.log('!')
     }
 
     const filteredMovies = (moviesForFiltered) => {
@@ -145,6 +144,9 @@ function App() {
 
     useEffect(() => {
         setAllMoviesFiltered(filteredMovies(allMoviesArray))
+        if (allMoviesFiltered.length === 0) {
+            setMessage('Ничего не найдено')
+        }
     }, [allMoviesArray])
 
     useEffect(() => {
@@ -158,6 +160,8 @@ function App() {
 
     const getAllMovies = async (e) => {
         e.preventDefault()
+        setMessage('')
+
         try {
             setOpenPreloader(true)
             const movies = await apiMovies.getInitialCards()
@@ -166,6 +170,7 @@ function App() {
             setOpenPreloader(false)
 
         } catch (error) {
+            setMessage('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз')
             console.log(error)
         }
     }
@@ -177,24 +182,19 @@ function App() {
             const savedMovies = await apiMain.getSavedMovies(localStorage.getItem('jwt'))
             await localStorage.setItem('savedMovies', JSON.stringify(savedMovies))
             setSavedMoviesArray(JSON.parse(localStorage.getItem('savedMovies')))
-            console.log(savedMovies)
+
         } catch (error) {
             console.log(error)
         }
     }
 
     useEffect(() => {
-        try{
+        try {
             getSavedMovies()
-        }catch (error){
+        } catch (error) {
             console.log(error)
         }
     }, [currentUser])
-
-
-    // useEffect(() => {
-    //     setAllMoviesArray(JSON.parse(localStorage.getItem('movies')))
-    // }, [])
 
     const likeMovie = async (movieData) => {
         try {
@@ -214,6 +214,11 @@ function App() {
         }
     }
 
+
+    useEffect(() => {
+        setMessage('')
+    }, [])
+
     return (
         <CurrentUserContext.Provider value={currentUser}>
             <div className="page">
@@ -225,12 +230,13 @@ function App() {
                         <Footer/>
                     </Route>
 
-                    <ProtectedRoute isOpenPreloader={isOpenPreloader} likedMovie={likeMovie} handleCheckbox={handleShortMovie}
+                    <ProtectedRoute isOpenPreloader={isOpenPreloader} likedMovie={likeMovie}
+                                    handleCheckbox={handleShortMovie}
                                     deleteMovie={deleteMovieFromSave}
                                     savedMovies={savedMoviesArray} filteredMovies={allMoviesFiltered}
                                     searchPhrase={searchPhrase} handleInput={setSearchPhrase}
                                     submitSearch={getAllMovies} onOpen={openMenu}
-                                    isLoggedIn={isLoggedIn}
+                                    isLoggedIn={isLoggedIn} message={message} setMessage={setMessage}
                                     path="/movies"
                                     component={Movies}>
                     </ProtectedRoute>
@@ -244,6 +250,7 @@ function App() {
 
                     <ProtectedRoute component={Profile} path="/profile" onOpen={openMenu} isLoggedIn={isLoggedIn}
                                     page={'profile'} onUpdateUser={handleUpdateUser} message={message}
+                                    setMessage={setMessage}
                                     onLogout={onLogout}>
                     </ProtectedRoute>
 
@@ -260,7 +267,6 @@ function App() {
                     </Route>
 
                 </Switch>
-                {/*<Preloader isOpen={isOpenPreloader}/>*/}
                 <Menu onClose={closeMenu} isClose={isCloseMenu}/>
             </div>
         </CurrentUserContext.Provider>

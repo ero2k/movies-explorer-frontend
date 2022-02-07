@@ -6,6 +6,7 @@ import {LOADED_MOVIES} from "../../utils/constants";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import Preloader from "../Preloader/Preloader";
+import "./Movies.css"
 
 
 function Movies(props) {
@@ -41,6 +42,10 @@ function Movies(props) {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    useEffect(() => {
+        props.setMessage('')
+    },[])
+
     return (
         <>
             <Header onOpen={props.onOpen} isLoggedIn={props.isLoggedIn} page={props.page}/>
@@ -54,7 +59,7 @@ function Movies(props) {
                                     filteredMovies={props.filteredMovies} size={windowDimensions} page='movies'
                                     schemeDevice={getCurrentDeviceScheme(windowDimensions.width)}
                                     likedMovie={props.likedMovie}/>
-                            : 'Ничего не найдено'
+                            : <div className={'movies__div-error'}>{props.message}</div>
                     :
                     <Preloader isOpen={props.isOpenPreloader}/>
                 }

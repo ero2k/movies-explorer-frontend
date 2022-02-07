@@ -10,18 +10,18 @@ function MoviesCardList(props) {
     const idSavedMovies = Object.values(props.savedMovies).map(savedMovie => savedMovie.movieId)
 
     useEffect(() => {
-        if(props.page === 'movies'){
+        if (props.page === 'movies') {
 
-            if(props.filteredMovies.length > 0 && props.filteredMovies.length > moviesToShow.length){
-                setButtonMoreStyle ("movies-list__button")
+            if (props.filteredMovies.length > 0 && props.filteredMovies.length > moviesToShow.length) {
+                setButtonMoreStyle("movies-list__button")
                 return
             }
         }
-       setButtonMoreStyle("movies-list__button movies-list__button-hidden")
+        setButtonMoreStyle("movies-list__button movies-list__button-hidden")
     }, [moviesToShow, props.filteredMovies.length, moviesToShow.length, props.page])
 
     useEffect(() => {
-        if (!!props.filteredMovies){
+        if (!!props.filteredMovies) {
             setMoviesToShow(Object.values(props.filteredMovies).slice(0, props.schemeDevice.totalCards))
         }
     }, [props.filteredMovies, props.schemeDevice.totalCards])
@@ -42,10 +42,10 @@ function MoviesCardList(props) {
             <ul className="movies-list__list">
                 {
                     moviesToShow.map((card) => (
-                        <MoviesCard isLiked={!!props.isLiked ? props.isLiked : idSavedMovies.includes(card.id)} page={props.page} key={card.id} card={card}
-                                    likedMovie={props.likedMovie} saveMovies={props.savedMovies} onDeleteMovie={props.deleteMovie}
-                                    // idCardOnLocalDB={idSavedMovies.includes(card.id) && getIdSavedMovies(card.id)}
-                                    // onCardDelete={getIdSavedMovies(card.id)  }
+                        <MoviesCard isLiked={!!props.isLiked ? props.isLiked : idSavedMovies.includes(card.id)}
+                                    page={props.page} key={!!card.id ? card.id : card.movieId} card={card}
+                                    likedMovie={props.likedMovie} saveMovies={props.savedMovies}
+                                    onDeleteMovie={props.deleteMovie}
                         />
                     ))
                 }
