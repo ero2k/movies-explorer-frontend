@@ -23,7 +23,6 @@ class ApiMain {
             if (res.ok) {
                 return res.json();
             }
-            console.log(res)
             return Promise.reject(`Ошибка: ${res.status}`);
         })
     }
@@ -41,7 +40,6 @@ class ApiMain {
     }
 
     deleteMovie(movieId, token) {
-        console.log(movieId)
         return this._fetchRequest(`/movies/${movieId}`, 'DELETE', '', token)
     }
 }

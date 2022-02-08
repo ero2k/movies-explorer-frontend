@@ -18,6 +18,7 @@ import apiMain from "../../utils/MainApi"
 import {CurrentUserContext} from '../../contexts/CurrentUserContext'
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import apiMovies from "../../utils/MoviesApi";
+import {DURATION_SHORT_MOVIE} from "../../utils/constants";
 
 document.documentElement.lang = 'ru'
 
@@ -25,7 +26,6 @@ document.documentElement.lang = 'ru'
 function App() {
     const [isCloseMenu, setCloseMenu] = useState(false)
     const [isOpenPreloader, setOpenPreloader] = useState(false)
-    const [authSuccess, setAuthSuccess] = useState(false)
     const [message, setMessage] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [currentUser, setCurrentUser] = useState({})
@@ -48,7 +48,7 @@ function App() {
         setCloseMenu(true)
     }
 
-    const tokenCheck = () => {
+    const tokenCheck = (path) => {
         const jwt = localStorage.getItem('jwt')
 
         if (!jwt) {
@@ -59,7 +59,7 @@ function App() {
             .then(data => {
                 setCurrentUser(data[0])
                 setIsLoggedIn(true);
-                history.push(pathRequestSource)
+                history.push(path)
             })
             .catch(err => {
                 setIsLoggedIn(false);
@@ -67,9 +67,12 @@ function App() {
             });
     };
 
+
     useEffect(() => {
-        tokenCheck();
+        tokenCheck(pathRequestSource);
+        // eslint-disable-next-line
     }, []);
+
 
     const onRegister = (data) => {
         setMessage('')
@@ -77,7 +80,6 @@ function App() {
         return register(data)
             .then(({token}) => {
                     localStorage.setItem('jwt', token)
-                    setAuthSuccess(true)
                     setIsLoggedIn(true)
                 }
             )
@@ -100,7 +102,7 @@ function App() {
             .then(({token}) => {
                 localStorage.setItem('jwt', token);
                 setIsLoggedIn(true);
-                history.push("/movies");
+                tokenCheck("/movies")
             }).catch((err) => {
                 if (err.status === 401) {
                     return setMessage("Неверный email или пароль");
@@ -113,8 +115,7 @@ function App() {
         setMessage('')
 
         return apiMain.saveProfile(data, localStorage.getItem('jwt')).then((reqdata) => {
-            console.log(reqdata)
-            setCurrentUser({name: reqdata.name, email: reqdata.email})
+            setCurrentUser(reqdata)
         }).catch(err => {
             if (err.status === 409) {
                 setMessage("Пользователь с таким email уже существует");
@@ -126,7 +127,10 @@ function App() {
 
     const onLogout = () => {
         setIsLoggedIn(false);
+        setMessage('')
         localStorage.removeItem('jwt');
+        localStorage.removeItem('movies');
+        localStorage.removeItem('saved-movies');
         history.push('/signin');
     };
 
@@ -139,7 +143,7 @@ function App() {
         if (!isShortMovie) {
             return filterByPhrase
         }
-        return filterByPhrase.filter(movie => movie.duration < 41)
+        return filterByPhrase.filter(movie => movie.duration <= DURATION_SHORT_MOVIE)
     }
 
     useEffect(() => {
@@ -147,11 +151,12 @@ function App() {
         if (allMoviesFiltered.length === 0) {
             setMessage('Ничего не найдено')
         }
+        // eslint-disable-next-line
     }, [allMoviesArray])
 
     useEffect(() => {
         setSavedMoviesFiltered(filteredMovies(savedMoviesArray))
-
+// eslint-disable-next-line
     }, [savedMoviesArray])
 
     const handleSubmitSearchForm = (e) => {

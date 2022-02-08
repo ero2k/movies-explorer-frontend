@@ -28,7 +28,6 @@ const Card = (props) => {
 
     function getIdSavedMovies(card) {
         const movie = props.saveMovies.filter(saveMovie => saveMovie.movieId === card)
-        console.log(props.saveMovies)
         return movie[0]._id
     }
 

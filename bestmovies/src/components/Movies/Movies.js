@@ -44,6 +44,7 @@ function Movies(props) {
 
     useEffect(() => {
         props.setMessage('')
+        // eslint-disable-next-line
     },[])
 
     return (

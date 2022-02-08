@@ -3,7 +3,6 @@ import "./Preloader.css"
 
 
 function Preloader(props) {
-    console.log(props)
     const preloaderStyle = props.isOpen ? "preloader preloader-open" : "preloader"
 
     return (

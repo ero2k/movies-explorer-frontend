@@ -3,8 +3,6 @@ import "./SearchForm.css"
 
 function SearchForm(props) {
 
-// console.log(props.checked)
-
     return (
         <section className="search-form max-width">
             <form className="search-form__form" action="" onSubmit={props.onSubmit}>

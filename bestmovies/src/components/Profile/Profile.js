@@ -14,8 +14,10 @@ function Profile(props) {
     const [formValid, setFormValid] = useState(false);
     const [isChangedForm, setIsChangedForm] = useState(false)
 
+
     useEffect(() => {
         props.setMessage('')
+        // eslint-disable-next-line
     }, [])
 
     function handleSubmit(e) {
