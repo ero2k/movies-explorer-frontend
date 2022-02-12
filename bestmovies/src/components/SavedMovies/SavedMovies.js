@@ -20,7 +20,8 @@ function SavedMovies(props) {
             <Header onOpen={props.onOpen} isLoggedIn={props.isLoggedIn} page={props.page}/>
             <main>
 
-                <SearchForm onSubmit={props.onSubmitSearchForm} onChange={handleInputChange} value={props.searchPhrase}
+                <SearchForm onSubmit={props.onSubmitSearchForm} onChange={handleInputChange}
+                            value={props.searchPhrase} currentPage='saved-movies'
                             checked={props.isShortMovie} onChangeChecked={props.handleCheckbox}/>
                 {
                     props.filteredMovies.length > 0 ?

@@ -32,6 +32,7 @@ function App() {
 
     const [allMoviesArray, setAllMoviesArray] = useState([])
     const [savedMoviesArray, setSavedMoviesArray] = useState([])
+
     const [allMoviesFiltered, setAllMoviesFiltered] = useState([])
     const [savedMoviesFiltered, setSavedMoviesFiltered] = useState([])
 
@@ -48,6 +49,7 @@ function App() {
     const openMenu = () => {
         setCloseMenu(true)
     }
+
 
     const tokenCheck = (path) => {
         const jwt = localStorage.getItem('jwt')
@@ -129,7 +131,6 @@ function App() {
     const onLogout = () => {
         setIsLoggedIn(false);
         setSavedMoviesFiltered([])
-        setAllMoviesArray([])
         setAllMoviesFiltered([])
         setSavedMoviesArray([])
         setSearchPhrase('')
@@ -150,88 +151,38 @@ function App() {
         if (!isShort) {
             return filterByPhrase
         }
+
         return filterByPhrase.filter(movie => movie.duration <= DURATION_SHORT_MOVIE)
     }
 
-//     useEffect(() => {
-//         setAllMoviesFiltered(filteredMovies(allMoviesArray))
-//         if (allMoviesFiltered.length === 0) {
-//             setMessage('Ничего не найдено')
-//         }
-//         // eslint-disable-next-line
-//     }, [allMoviesArray])
-//
-//     useEffect(() => {
-//         setSavedMoviesFiltered(filteredMovies(savedMoviesArray))
-// // eslint-disable-next-line
-//     }, [savedMoviesArray])
+    useEffect(() => {
+        console.log(allMoviesFiltered)
+        console.log(savedMoviesFiltered)
 
-    // const handleSubmitSearchForm = (e) => {
-    //     e.preventDefault()
-    //     setSavedMoviesFiltered(filteredMovies(savedMoviesArray))
-    //
-    //     if (savedMoviesFiltered.length === 0) {
-    //         setMessage('Ничего не найдено')
-    //     }
-    // }
-
-    // const getAllMovies = async (e) => {
-    //     e.preventDefault()
-    //     setMessage('')
-    //
-    //     try {
-    //         setOpenPreloader(true)
-    //         const movies = await apiMovies.getInitialCards()
-    //         await localStorage.setItem('movies', JSON.stringify(movies))
-    //         setAllMoviesArray(JSON.parse(localStorage.getItem('movies')))
-    //         setOpenPreloader(false)
-    //
-    //     } catch (error) {
-    //         setMessage('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз')
-    //         console.log(error)
-    //     }
-    // }
+        if (isShortMovie) {
+            setAllMoviesFiltered(allMoviesFiltered.movies.filter(movie => movie.duration <= DURATION_SHORT_MOVIE))
+            setSavedMoviesFiltered(savedMoviesFiltered.filter(movie => movie.duration <= DURATION_SHORT_MOVIE))
+        } else {
+            setAllMoviesFiltered(JSON.parse(localStorage.getItem('movies')))
+            setSavedMoviesFiltered(JSON.parse(localStorage.getItem('savedMovies')))
+        }
+    }, [isShortMovie])
 
     const getAllMovies = async () => {
-        // e.preventDefault()
         setMessage('')
 
         try {
             setOpenPreloader(true)
             const movies = await apiMovies.getInitialCards()
+            await localStorage.setItem('allMovies', JSON.stringify(movies))
+            setAllMoviesArray(movies)
             setOpenPreloader(false)
 
             return movies
-
         } catch (error) {
             setMessage('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз')
             console.log(error)
         }
-
-    }
-
-    const saveResultLastSearchMoviesLocalStorage = async (searchPhrase, isShortMovie) => {
-        console.log(isShortMovie, searchPhrase)
-        // const idSavedMovies = Object.values(savedMoviesArray).map(savedMovie => savedMovie.movieId)
-
-        const movies = await getAllMovies()
-        const filteredMoviesResult = await filteredMovies(movies, searchPhrase, isShortMovie)
-        // const moviesAfterHandle = Object.values(filteredMoviesResult).map(movie => {
-        //     return {
-        //         ...movie,
-        //         'isLiked': idSavedMovies.includes(movie.id)
-        //     }
-        // })
-
-        const resultLastSearch = {
-            'searchPhrase': searchPhrase,
-            'isShortMovie': isShortMovie,
-            'movies': filteredMoviesResult
-        }
-
-        // console.log(resultLastSearch)
-        setAllMoviesFiltered(resultLastSearch)
-        await localStorage.setItem('movies', JSON.stringify(resultLastSearch))
     }
 
     const getSavedMovies = async () => {
@@ -240,16 +191,34 @@ function App() {
 
             const savedMovies = await apiMain.getSavedMovies(localStorage.getItem('jwt'))
             await localStorage.setItem('savedMovies', JSON.stringify(savedMovies))
-            await Promise.resolve(setSavedMoviesArray(JSON.parse(localStorage.getItem('savedMovies'))))
+            setSavedMoviesArray(JSON.parse(localStorage.getItem('savedMovies')))
 
         } catch (error) {
             console.log(error)
         }
     }
 
+
+    const saveResultLastSearchMoviesLocalStorage = async (searchPhrase, isShortMovie) => {
+        console.log(isShortMovie, searchPhrase)
+
+        const filteredMoviesResult = await filteredMovies(allMoviesArray, searchPhrase, isShortMovie)
+
+        const resultLastSearch = {
+            'searchPhrase': searchPhrase,
+            'isShortMovie': isShortMovie,
+            'movies': filteredMoviesResult
+        }
+
+        setAllMoviesFiltered(resultLastSearch)
+        await localStorage.setItem('movies', JSON.stringify(resultLastSearch))
+    }
+
+
     useEffect(() => {
         if (!!currentUser.email) {
             try {
+                getAllMovies()
                 getSavedMovies()
             } catch (error) {
                 console.log(error)
@@ -268,13 +237,6 @@ function App() {
 
             const idSavedMovies = Object.values(savedMovies).map(savedMovie => savedMovie.movieId)
             console.log(allMoviesFiltered, idSavedMovies)
-            //
-            // const moviesAfterHandle = Object.values(allMoviesFiltered.movies).map(movie => {
-            //     return {
-            //         ...movie,
-            //         'isLiked': idSavedMovies.includes(movie.id)
-            //     }
-            // })
 
             const resultLastSearch = {
                 'searchPhrase': allMoviesFiltered.searchPhrase,
@@ -293,6 +255,16 @@ function App() {
         try {
             await apiMain.deleteMovie(idCard, localStorage.getItem('jwt'))
             await getSavedMovies()
+            const savedMovies = JSON.parse(localStorage.getItem('savedMovies'))
+            const idSavedMovies = Object.values(savedMovies).map(savedMovie => savedMovie.movieId)
+
+            const filteredMovies = Object.values(savedMoviesFiltered).filter(savedMovie => {
+                if (idSavedMovies.includes(savedMovie.movieId)) {
+                    return savedMovie
+                }
+            })
+
+            setSavedMoviesFiltered(filteredMovies)
         } catch (error) {
             console.log(error)
         }
@@ -300,20 +272,23 @@ function App() {
 
     const handleSubmitSearchForm = async (phrase, checkbox, page) => {
         setSearchPhrase(phrase)
-        setIsShortMovie(checkbox)
+        // setIsShortMovie(checkbox)
         // await Promise.resolve(setIsShortMovie(checkbox))
         if (page === 'movies') {
-            await saveResultLastSearchMoviesLocalStorage(phrase, checkbox)
+            localStorage.removeItem('countShow')
+            await saveResultLastSearchMoviesLocalStorage(phrase, isShortMovie)
+        } else if (page === 'saved-movies') {
+            const filteredSaveMovies = filteredMovies(savedMoviesArray, phrase, checkbox)
+            setSavedMoviesFiltered(filteredSaveMovies)
         }
     }
-
 
     useEffect(() => {
         setMessage('')
 
-        if(!!localStorage.getItem('movies')){
+        if (!!localStorage.getItem('movies')) {
             setAllMoviesFiltered(JSON.parse(localStorage.getItem('movies')))
-        }else {
+        } else {
             setAllMoviesFiltered({
                 'searchPhrase': '',
                 'isShortMovie': false,
@@ -335,9 +310,10 @@ function App() {
                     </Route>
 
                     <ProtectedRoute isOpenPreloader={isOpenPreloader} likedMovie={likeMovie}
-                                    handleCheckbox={handleShortMovie}
+                                    handleCheckbox={handleShortMovie} checked={isShortMovie}
                                     deleteMovie={deleteMovieFromSave}
-                                    savedMovies={savedMoviesArray} savedIsShortMovie={setIsShortMovie}
+                                    savedMovies={savedMoviesArray}
+                                    savedIsShortMovie={setIsShortMovie}
                                     filteredMovies={allMoviesFiltered}
                         // savedSearchPhrase={handleSubmitSearchForm}
                                     handleInpit={searchPhrase}
