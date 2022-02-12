@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import "../../index.css"
 import "./App.css"
 import Main from "../Main/Main"
@@ -12,7 +12,6 @@ import Register from "../Register/Register";
 import Login from "../Login/Login";
 import NotFound from "../NotFound/NotFound";
 import Menu from "../Menu/Menu";
-import {useState, useEffect} from 'react';
 import {register, getEmail, authorize} from "../../utils/authApi";
 import apiMain from "../../utils/MainApi"
 import {CurrentUserContext} from '../../contexts/CurrentUserContext'
@@ -138,21 +137,20 @@ function App() {
         setIsShortMovie(!isShortMovie)
     }
 
-    const filteredMovies = (moviesForFiltered) => {
+    const filteredMovies = React.useCallback( (moviesForFiltered) => {
         const filterByPhrase = moviesForFiltered.filter(movie => movie.nameRU.toLowerCase().trim().includes(searchPhrase.toLowerCase().trim()))
         if (!isShortMovie) {
             return filterByPhrase
         }
         return filterByPhrase.filter(movie => movie.duration <= DURATION_SHORT_MOVIE)
-    }
+    },[isShortMovie, searchPhrase])
 
     useEffect(() => {
         setAllMoviesFiltered(filteredMovies(allMoviesArray))
         if (allMoviesFiltered.length === 0) {
             setMessage('Ничего не найдено')
         }
-        // eslint-disable-next-line
-    }, [allMoviesArray])
+    }, [allMoviesArray, filteredMovies])
 
     useEffect(() => {
         setSavedMoviesFiltered(filteredMovies(savedMoviesArray))
