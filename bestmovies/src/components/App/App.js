@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import "../../index.css"
 import "./App.css"
 import Main from "../Main/Main"
@@ -12,6 +12,7 @@ import Register from "../Register/Register";
 import Login from "../Login/Login";
 import NotFound from "../NotFound/NotFound";
 import Menu from "../Menu/Menu";
+import {useState, useEffect} from 'react';
 import {register, getEmail, authorize} from "../../utils/authApi";
 import apiMain from "../../utils/MainApi"
 import {CurrentUserContext} from '../../contexts/CurrentUserContext'
@@ -36,6 +37,7 @@ function App() {
 
     const [isShortMovie, setIsShortMovie] = useState(false)
     const [searchPhrase, setSearchPhrase] = useState('')
+
     const pathRequestSource = useLocation()
 
     const history = useHistory();
@@ -134,6 +136,7 @@ function App() {
         localStorage.removeItem('jwt');
         localStorage.removeItem('movies');
         localStorage.removeItem('savedMovies');
+        localStorage.removeItem('countShow')
         setMessage('')
         history.push('/signin');
     };
@@ -142,50 +145,93 @@ function App() {
         setIsShortMovie(!isShortMovie)
     }
 
-    const filteredMovies = React.useCallback( (moviesForFiltered) => {
-        const filterByPhrase = moviesForFiltered.filter(movie => movie.nameRU.toLowerCase().trim().includes(searchPhrase.toLowerCase().trim()))
-        if (!isShortMovie) {
+    const filteredMovies = (moviesForFiltered, phrase, isShort) => {
+        const filterByPhrase = moviesForFiltered.filter(movie => movie.nameRU.toLowerCase().trim().includes(phrase.toLowerCase().trim()))
+        if (!isShort) {
             return filterByPhrase
         }
         return filterByPhrase.filter(movie => movie.duration <= DURATION_SHORT_MOVIE)
-    },[isShortMovie, searchPhrase])
-
-    useEffect(() => {
-        setAllMoviesFiltered(filteredMovies(allMoviesArray))
-        if (allMoviesFiltered.length === 0) {
-            setMessage('Ничего не найдено')
-        }
-    }, [allMoviesArray, filteredMovies])
-
-    useEffect(() => {
-        setSavedMoviesFiltered(filteredMovies(savedMoviesArray))
-// eslint-disable-next-line
-    }, [savedMoviesArray])
-
-    const handleSubmitSearchForm = (e) => {
-        e.preventDefault()
-        setSavedMoviesFiltered(filteredMovies(savedMoviesArray))
-
-        if (savedMoviesFiltered.length === 0) {
-            setMessage('Ничего не найдено')
-        }
     }
 
-    const getAllMovies = async (e) => {
-        e.preventDefault()
+//     useEffect(() => {
+//         setAllMoviesFiltered(filteredMovies(allMoviesArray))
+//         if (allMoviesFiltered.length === 0) {
+//             setMessage('Ничего не найдено')
+//         }
+//         // eslint-disable-next-line
+//     }, [allMoviesArray])
+//
+//     useEffect(() => {
+//         setSavedMoviesFiltered(filteredMovies(savedMoviesArray))
+// // eslint-disable-next-line
+//     }, [savedMoviesArray])
+
+    // const handleSubmitSearchForm = (e) => {
+    //     e.preventDefault()
+    //     setSavedMoviesFiltered(filteredMovies(savedMoviesArray))
+    //
+    //     if (savedMoviesFiltered.length === 0) {
+    //         setMessage('Ничего не найдено')
+    //     }
+    // }
+
+    // const getAllMovies = async (e) => {
+    //     e.preventDefault()
+    //     setMessage('')
+    //
+    //     try {
+    //         setOpenPreloader(true)
+    //         const movies = await apiMovies.getInitialCards()
+    //         await localStorage.setItem('movies', JSON.stringify(movies))
+    //         setAllMoviesArray(JSON.parse(localStorage.getItem('movies')))
+    //         setOpenPreloader(false)
+    //
+    //     } catch (error) {
+    //         setMessage('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз')
+    //         console.log(error)
+    //     }
+    // }
+
+    const getAllMovies = async () => {
+        // e.preventDefault()
         setMessage('')
 
         try {
             setOpenPreloader(true)
             const movies = await apiMovies.getInitialCards()
-            await localStorage.setItem('movies', JSON.stringify(movies))
-            setAllMoviesArray(JSON.parse(localStorage.getItem('movies')))
             setOpenPreloader(false)
+
+            return movies
 
         } catch (error) {
             setMessage('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз')
             console.log(error)
         }
+
+    }
+
+    const saveResultLastSearchMoviesLocalStorage = async (searchPhrase, isShortMovie) => {
+        console.log(isShortMovie, searchPhrase)
+        // const idSavedMovies = Object.values(savedMoviesArray).map(savedMovie => savedMovie.movieId)
+
+        const movies = await getAllMovies()
+        const filteredMoviesResult = await filteredMovies(movies, searchPhrase, isShortMovie)
+        // const moviesAfterHandle = Object.values(filteredMoviesResult).map(movie => {
+        //     return {
+        //         ...movie,
+        //         'isLiked': idSavedMovies.includes(movie.id)
+        //     }
+        // })
+
+        const resultLastSearch = {
+            'searchPhrase': searchPhrase,
+            'isShortMovie': isShortMovie,
+            'movies': filteredMoviesResult
+        }
+
+        // console.log(resultLastSearch)
+        setAllMoviesFiltered(resultLastSearch)
+        await localStorage.setItem('movies', JSON.stringify(resultLastSearch))
     }
 
     const getSavedMovies = async () => {
@@ -194,7 +240,7 @@ function App() {
 
             const savedMovies = await apiMain.getSavedMovies(localStorage.getItem('jwt'))
             await localStorage.setItem('savedMovies', JSON.stringify(savedMovies))
-            setSavedMoviesArray(JSON.parse(localStorage.getItem('savedMovies')))
+            await Promise.resolve(setSavedMoviesArray(JSON.parse(localStorage.getItem('savedMovies'))))
 
         } catch (error) {
             console.log(error)
@@ -202,7 +248,7 @@ function App() {
     }
 
     useEffect(() => {
-        if(!!currentUser.email){
+        if (!!currentUser.email) {
             try {
                 getSavedMovies()
             } catch (error) {
@@ -213,9 +259,31 @@ function App() {
     }, [currentUser])
 
     const likeMovie = async (movieData) => {
+
         try {
             await apiMain.likedMovie({...movieData}, localStorage.getItem('jwt'))
             await getSavedMovies()
+
+            const savedMovies = JSON.parse(localStorage.getItem('savedMovies'))
+
+            const idSavedMovies = Object.values(savedMovies).map(savedMovie => savedMovie.movieId)
+            console.log(allMoviesFiltered, idSavedMovies)
+            //
+            // const moviesAfterHandle = Object.values(allMoviesFiltered.movies).map(movie => {
+            //     return {
+            //         ...movie,
+            //         'isLiked': idSavedMovies.includes(movie.id)
+            //     }
+            // })
+
+            const resultLastSearch = {
+                'searchPhrase': allMoviesFiltered.searchPhrase,
+                'isShortMovie': allMoviesFiltered.isShortMovie,
+                'movies': allMoviesFiltered.movies
+            }
+            setAllMoviesFiltered(resultLastSearch)
+            await localStorage.setItem('movies', JSON.stringify(resultLastSearch))
+
         } catch (error) {
             console.log(error)
         }
@@ -230,9 +298,29 @@ function App() {
         }
     }
 
+    const handleSubmitSearchForm = async (phrase, checkbox, page) => {
+        setSearchPhrase(phrase)
+        setIsShortMovie(checkbox)
+        // await Promise.resolve(setIsShortMovie(checkbox))
+        if (page === 'movies') {
+            await saveResultLastSearchMoviesLocalStorage(phrase, checkbox)
+        }
+    }
+
 
     useEffect(() => {
         setMessage('')
+
+        if(!!localStorage.getItem('movies')){
+            setAllMoviesFiltered(JSON.parse(localStorage.getItem('movies')))
+        }else {
+            setAllMoviesFiltered({
+                'searchPhrase': '',
+                'isShortMovie': false,
+                'movies': {}
+            })
+        }
+
     }, [])
 
     return (
@@ -249,9 +337,14 @@ function App() {
                     <ProtectedRoute isOpenPreloader={isOpenPreloader} likedMovie={likeMovie}
                                     handleCheckbox={handleShortMovie}
                                     deleteMovie={deleteMovieFromSave}
-                                    savedMovies={savedMoviesArray} filteredMovies={allMoviesFiltered}
-                                    searchPhrase={searchPhrase} handleInput={setSearchPhrase}
-                                    submitSearch={getAllMovies} onOpen={openMenu}
+                                    savedMovies={savedMoviesArray} savedIsShortMovie={setIsShortMovie}
+                                    filteredMovies={allMoviesFiltered}
+                        // savedSearchPhrase={handleSubmitSearchForm}
+                                    handleInpit={searchPhrase}
+                        // searchPhrase={searchPhrase} handleInput={setSearchPhrase}
+                                    submitSearch={handleSubmitSearchForm}
+                        // submitSearch={saveResultLastSearchMoviesLocalStorage}
+                                    onOpen={openMenu}
                                     isLoggedIn={isLoggedIn} message={message} setMessage={setMessage}
                                     path="/movies"
                                     component={Movies}>
@@ -261,8 +354,9 @@ function App() {
                                     filteredMovies={savedMoviesFiltered} setSavedMovies={setSavedMoviesFiltered}
                                     component={SavedMovies} savedMovies={savedMoviesArray}
                                     message={message} setMessage={setMessage}
-                                    isLoggedIn={isLoggedIn} path="/saved-movies" searchPhrase={searchPhrase}
-                                    handleInput={setSearchPhrase} onSubmitSearchForm={handleSubmitSearchForm}
+                                    isLoggedIn={isLoggedIn} path="/saved-movies"
+                        // searchPhrase={searchPhrase} handleInput={setSearchPhrase}
+                                    onSubmitSearchForm={handleSubmitSearchForm}
                                     onOpen={openMenu} page={'saved-movies'} deleteMovie={deleteMovieFromSave}>
                     </ProtectedRoute>
 

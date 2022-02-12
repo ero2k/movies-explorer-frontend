@@ -12,9 +12,9 @@ import "./Movies.css"
 function Movies(props) {
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
-    function handleInputChange(e) {
-        props.handleInput(e.target.value)
-    }
+    // function handleInputChange(e) {
+    //     props.handleInput(e.target.value)
+    // }
 
     function getCurrentDeviceScheme(windowWidth) {
         if (windowWidth > 1279) {
@@ -42,22 +42,36 @@ function Movies(props) {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // useEffect(() => {
+    //
+    // }, []);
+
     useEffect(() => {
         props.setMessage('')
         // eslint-disable-next-line
     },[])
 
+    console.log(!!props.filteredMovies.movies)
+
     return (
         <>
             <Header onOpen={props.onOpen} isLoggedIn={props.isLoggedIn} page={props.page}/>
             <main>
-                <SearchForm onSubmit={props.submitSearch} onChange={handleInputChange} value={props.searchPhrase}
-                            checked={props.isShortMovie} onChangeChecked={props.handleCheckbox}/>
+                <SearchForm onSubmit={props.submitSearch}
+                            // savedSearchPhrase={props.savedSearchPhrase}
+                            inputChange={props.handleInput} value={props.searchPhrase}
+                            currentPage='movies'
+                            phraseFromLS={props.filteredMovies.searchPhrase}
+                            checked={props.filteredMovies.isShortMovie}
+
+
+                            // savedIsShortMovie={props.savedIsShortMovie}
+                />
 
                 { !props.isOpenPreloader ?
-                        props.filteredMovies.length > 0 ?
+                    !!props.filteredMovies.movies && props.filteredMovies.movies.length > 0 ?
                     <MoviesCardList savedMovies={props.savedMovies} deleteMovie={props.deleteMovie}
-                                    filteredMovies={props.filteredMovies} size={windowDimensions} page='movies'
+                                    filteredMovies={props.filteredMovies.movies} size={windowDimensions} page='movies'
                                     schemeDevice={getCurrentDeviceScheme(windowDimensions.width)}
                                     likedMovie={props.likedMovie}/>
                             : <div className={'movies__div-error'}>{props.message}</div>

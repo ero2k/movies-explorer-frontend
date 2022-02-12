@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useMemo} from "react";
 import "./MoviesCardList.css"
 import MoviesCard from "../MoviesCard/MoviesCard";
 import {useEffect, useState} from "react";
 
 function MoviesCardList(props) {
-    const [moviesToShow, setMoviesToShow] = useState([])
+    const [countMovieToShow, setCountMovieToShow] = useState(localStorage.getItem('countShow') || props.schemeDevice.totalCards)
+    const [moviesToShow, setMoviesToShow] = useState(Object.values(props.filteredMovies).slice(0, countMovieToShow))
     const [buttonMoreStyle, setButtonMoreStyle] = useState('')
 
     const idSavedMovies = Object.values(props.savedMovies).map(savedMovie => savedMovie.movieId)
@@ -22,7 +23,7 @@ function MoviesCardList(props) {
 
     useEffect(() => {
         if (!!props.filteredMovies) {
-            setMoviesToShow(Object.values(props.filteredMovies).slice(0, props.schemeDevice.totalCards))
+            setMoviesToShow(Object.values(props.filteredMovies).slice(0, countMovieToShow))
         }
     }, [props.filteredMovies, props.schemeDevice.totalCards])
 
@@ -32,17 +33,30 @@ function MoviesCardList(props) {
         }
     }, [props.savedMovies, props.filteredMovies, props.schemeDevice.totalCards])
 
+
+    useMemo(() => {
+        setMoviesToShow(Object.values(props.filteredMovies).slice(0, countMovieToShow))
+        localStorage.setItem('countShow', countMovieToShow)
+    },[countMovieToShow])
+
+
     function addMoreMovies() {
-        const totalMoviesToShow = moviesToShow.length + props.schemeDevice.download
-        setMoviesToShow(Object.values(props.filteredMovies).slice(0, totalMoviesToShow))
+        setCountMovieToShow(moviesToShow.length + props.schemeDevice.download)
     }
+
+    // useEffect(() => {
+    //     localStorage.setItem('countShow', countMovieToShow)
+    // },[])
+
 
     return (
         <section className="movies-list max-width">
             <ul className="movies-list__list">
                 {
                     moviesToShow.map((card) => (
-                        <MoviesCard isLiked={!!props.isLiked ? props.isLiked : idSavedMovies.includes(card.id)}
+                        <MoviesCard
+                            isLiked={!!props.isLiked ? props.isLiked : idSavedMovies.includes(card.id)}
+                            // isLiked={card.hasOwnProperty('isLiked') ? card.isLiked : true}
                                     page={props.page} key={!!card.id ? card.id : card.movieId} card={card}
                                     likedMovie={props.likedMovie} saveMovies={props.savedMovies}
                                     onDeleteMovie={props.deleteMovie}
@@ -55,4 +69,4 @@ function MoviesCardList(props) {
     )
 }
 
-export default MoviesCardList;
+export default React.memo(MoviesCardList);

@@ -19,6 +19,7 @@ function SavedMovies(props) {
         <>
             <Header onOpen={props.onOpen} isLoggedIn={props.isLoggedIn} page={props.page}/>
             <main>
+
                 <SearchForm onSubmit={props.onSubmitSearchForm} onChange={handleInputChange} value={props.searchPhrase}
                             checked={props.isShortMovie} onChangeChecked={props.handleCheckbox}/>
                 {
@@ -29,6 +30,7 @@ function SavedMovies(props) {
                         />
                         :
                         <div className={'movies__div-error'}>Ничего не найдено</div>
+
                 }
 
             </main>
