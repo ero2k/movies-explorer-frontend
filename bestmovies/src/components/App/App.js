@@ -126,10 +126,15 @@ function App() {
 
     const onLogout = () => {
         setIsLoggedIn(false);
-        setMessage('')
+        setSavedMoviesFiltered([])
+        setAllMoviesArray([])
+        setAllMoviesFiltered([])
+        setSavedMoviesArray([])
+        setSearchPhrase('')
         localStorage.removeItem('jwt');
         localStorage.removeItem('movies');
-        localStorage.removeItem('saved-movies');
+        localStorage.removeItem('savedMovies');
+        setMessage('')
         history.push('/signin');
     };
 
@@ -268,11 +273,11 @@ function App() {
                     </ProtectedRoute>
 
                     <Route path="/signup">
-                        <Register onRegister={onRegister} message={message}/>
+                        <Register onRegister={onRegister} setMessage={setMessage} message={message}/>
                     </Route>
 
                     <Route path="/signin">
-                        <Login onLogin={onLogin} message={message}/>
+                        <Login onLogin={onLogin} setMessage={setMessage} message={message}/>
                     </Route>
 
                     <Route path="/*">

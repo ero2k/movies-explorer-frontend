@@ -13,6 +13,8 @@ function Register(props) {
     const [passwordError, setPasswordError] = useState("");
     const [formValid, setFormValid] = useState(false);
 
+    useEffect(() => {props.setMessage('')}, [])
+
     function handleChangeName(e) {
         const validName = /^[a-zA-Z- ]+$/.test(e.target.value);
 

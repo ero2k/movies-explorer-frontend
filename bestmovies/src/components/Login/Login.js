@@ -38,6 +38,9 @@ function Login(props) {
         props.onLogin({email, password});
     }
 
+    useEffect(() => {props.setMessage('')}, [])
+
+
     useEffect(() => {
         if (
             !emailError &&
