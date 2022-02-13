@@ -14,6 +14,7 @@ function Profile(props) {
     const [formValid, setFormValid] = useState(false);
     const [isChangedForm, setIsChangedForm] = useState(false)
 
+    console.log(props.message)
 
     useEffect(() => {
         props.setMessage('')

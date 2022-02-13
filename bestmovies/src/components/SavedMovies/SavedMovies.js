@@ -1,11 +1,26 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList"
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
+import {DURATION_SHORT_MOVIE} from "../../utils/constants";
 
 
 function SavedMovies(props) {
+    const [isChecked, setIsChecked] = useState(false)
+    const [moviesFiltered, setMoviesFiltered] = useState([])
+
+    console.log(props.filteredMovies)
+
+    useEffect(()=>{
+        if(isChecked){
+            setMoviesFiltered(props.filteredMovies.filter(movie => movie.duration <= DURATION_SHORT_MOVIE))
+        } else {
+            setMoviesFiltered(props.filteredMovies)
+        }
+
+    },[isChecked])
+
     function handleInputChange(e) {
         props.handleInput(e.target.value)
     }
@@ -22,12 +37,14 @@ function SavedMovies(props) {
 
                 <SearchForm onSubmit={props.onSubmitSearchForm} onChange={handleInputChange}
                             value={props.searchPhrase} currentPage='saved-movies'
-                            checked={props.isShortMovie} onChangeChecked={props.handleCheckbox}/>
+                            checked={false} onChangeChecked={props.handleCheckbox}
+                            savedIsShortMovie={setIsChecked}
+                />
                 {
-                    props.filteredMovies.length > 0 ?
+                    moviesFiltered.length > 0 ?
                         <MoviesCardList deleteMovie={props.deleteMovie} likedMovie={props.likedMovie} isLiked={true}
-                                        filteredMovies={props.filteredMovies} savedMovies={props.filteredMovies}
-                                        schemeDevice={{'totalCards': props.filteredMovies.length}}
+                                        filteredMovies={moviesFiltered} savedMovies={moviesFiltered}
+                                        schemeDevice={{'totalCards': moviesFiltered.length}}
                         />
                         :
                         <div className={'movies__div-error'}>Ничего не найдено</div>

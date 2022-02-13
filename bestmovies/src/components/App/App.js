@@ -5,7 +5,7 @@ import Main from "../Main/Main"
 import Header from "../Header/Header"
 import Footer from "../Footer/Footer";
 import Movies from "../Movies/Movies";
-import {Route, Switch, useHistory, useLocation} from 'react-router-dom';
+import {Route, Switch, Redirect, useHistory, useLocation} from 'react-router-dom';
 import SavedMovies from "../SavedMovies/SavedMovies";
 import Profile from "../Profile/Profile";
 import Register from "../Register/Register";
@@ -81,14 +81,15 @@ function App() {
         setMessage('')
 
         return register(data)
-            .then(({token}) => {
+            .then(( {token}) => {
                     localStorage.setItem('jwt', token)
                     setIsLoggedIn(true)
                 }
+            ).then(() => {
+                    tokenCheck('/movies')
+                }
             )
-            .then(() => {
-                history.push('/movies');
-            }).catch(err => {
+            .catch(err => {
                 console.log(err)
                 if (err.status === 409) {
                     setMessage("Пользователь с таким email уже существует");
@@ -119,7 +120,12 @@ function App() {
 
         return apiMain.saveProfile(data, localStorage.getItem('jwt')).then((reqdata) => {
             setCurrentUser(reqdata)
-        }).catch(err => {
+            setMessage("Данные успешно сохранены");
+        })
+            .then((data) => {
+                setMessage("Данные успешно сохранены");
+            })
+            .catch(err => {
             if (err.status === 409) {
                 setMessage("Пользователь с таким email уже существует");
             } else {
@@ -139,7 +145,7 @@ function App() {
         localStorage.removeItem('savedMovies');
         localStorage.removeItem('countShow')
         setMessage('')
-        history.push('/signin');
+        history.push('/');
     };
 
     function handleShortMovie() {
@@ -156,16 +162,7 @@ function App() {
     }
 
     useEffect(() => {
-        console.log(allMoviesFiltered)
-        console.log(savedMoviesFiltered)
-
-        if (isShortMovie) {
-            setAllMoviesFiltered(allMoviesFiltered.movies.filter(movie => movie.duration <= DURATION_SHORT_MOVIE))
-            setSavedMoviesFiltered(savedMoviesFiltered.filter(movie => movie.duration <= DURATION_SHORT_MOVIE))
-        } else {
-            setAllMoviesFiltered(JSON.parse(localStorage.getItem('movies')))
-            setSavedMoviesFiltered(JSON.parse(localStorage.getItem('savedMovies')))
-        }
+        saveResultLastSearchMoviesLocalStorage(searchPhrase, isShortMovie)
     }, [isShortMovie])
 
     const getAllMovies = async () => {
@@ -234,6 +231,8 @@ function App() {
             await getSavedMovies()
 
             const savedMovies = JSON.parse(localStorage.getItem('savedMovies'))
+
+            setSavedMoviesFiltered(savedMovies)
 
             const idSavedMovies = Object.values(savedMovies).map(savedMovie => savedMovie.movieId)
             console.log(allMoviesFiltered, idSavedMovies)
@@ -343,11 +342,19 @@ function App() {
                     </ProtectedRoute>
 
                     <Route path="/signup">
-                        <Register onRegister={onRegister} setMessage={setMessage} message={message}/>
+                        {!isLoggedIn ?
+                            <Register onRegister={onRegister} setMessage={setMessage} message={message}/>
+                            :
+                            <Redirect to="/profile"/>
+                        }
                     </Route>
 
                     <Route path="/signin">
-                        <Login onLogin={onLogin} setMessage={setMessage} message={message}/>
+                        {!isLoggedIn ?
+                            <Login onLogin={onLogin} setMessage={setMessage} message={message}/>
+                        :
+                            <Redirect to="/profile"/>
+                        }
                     </Route>
 
                     <Route path="/*">

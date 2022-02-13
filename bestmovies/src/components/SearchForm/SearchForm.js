@@ -1,13 +1,19 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./SearchForm.css"
 
 function SearchForm(props) {
     const [searchPhrase, setSearchPhrase] = useState(!!props.phraseFromLS ? props.phraseFromLS : '')
-    // const [isChecked, setIsChecked] = useState(props.checked || false)
-    //
-    // function handleCheckBox() {
-    //     setIsChecked(!isChecked)
-    // }
+    const [isChecked, setIsChecked] = useState(props.checked || false)
+
+    function handleCheckBox() {
+        setIsChecked(!isChecked)
+    }
+
+    useEffect(()=>{
+        if(!!props.savedIsShortMovie){
+            props.savedIsShortMovie(isChecked)
+        }
+    },[isChecked])
 
     function handleInputChange(e) {
         setSearchPhrase(e.target.value)
@@ -29,7 +35,7 @@ function SearchForm(props) {
                 <span className='search-form__border'></span>
                 <div className='search-form__section-option'>
                     <label htmlFor="search-form__checkbox" className="search-form__label">
-                        <input type="checkbox" checked={props.checked} onChange={props.handleCheckBox} id="search-form__checkbox"
+                        <input type="checkbox" checked={isChecked} onChange={handleCheckBox} id="search-form__checkbox"
                                className='search-form__checkbox'/>
                         <span className='search-form__checkbox-switch'></span>
                     </label>

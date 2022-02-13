@@ -49,9 +49,12 @@ function Movies(props) {
     // }, []);
 
     useEffect(() => {
-        if (props.filteredMovies.movies.length === 0) {
-            setMessageError('Ничего не найдено!')
+        if(!!props.filteredMovies.movies){
+            if (props.filteredMovies.movies.length === 0) {
+                setMessageError('Ничего не найдено!')
+            }
         }
+
     }, [])
 
     // console.log(props.filteredMovies.movies.length)
@@ -69,7 +72,7 @@ function Movies(props) {
                             checked={props.checked}
                             handleCheckBox={props.handleCheckbox}
 
-                    // savedIsShortMovie={props.savedIsShortMovie}
+                    savedIsShortMovie={props.savedIsShortMovie}
                 />
 
                 {!props.isOpenPreloader ?
