@@ -2,16 +2,16 @@ import React, {useEffect, useState} from "react";
 import "./SearchForm.css"
 
 function SearchForm(props) {
-    const [searchPhrase, setSearchPhrase] = useState(!!props.phraseFromLS ? props.phraseFromLS : '')
-    const [isChecked, setIsChecked] = useState(props.checked || false)
+    const [searchPhrase, setSearchPhrase] = useState(props.phrase || '')
+    const [isChecked, setIsChecked] = useState(props.checkbox || false)
 
     function handleCheckBox() {
         setIsChecked(!isChecked)
     }
 
     useEffect(()=>{
-        if(!!props.savedIsShortMovie){
-            props.savedIsShortMovie(isChecked)
+        if(!!props.handleCheckBox){
+            props.handleCheckBox(isChecked)
         }
     },[isChecked])
 
@@ -21,8 +21,7 @@ function SearchForm(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
-        props.onSubmit(searchPhrase, props.checked, props.currentPage)
+        props.onSubmit(searchPhrase)
     }
 
     return (

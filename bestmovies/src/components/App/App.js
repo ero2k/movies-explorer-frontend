@@ -36,6 +36,8 @@ function App() {
     const [allMoviesFiltered, setAllMoviesFiltered] = useState([])
     const [savedMoviesFiltered, setSavedMoviesFiltered] = useState([])
 
+    const [lastState, setLastState] = useState({})
+
     const [isShortMovie, setIsShortMovie] = useState(false)
     const [searchPhrase, setSearchPhrase] = useState('')
 
@@ -81,7 +83,7 @@ function App() {
         setMessage('')
 
         return register(data)
-            .then(( {token}) => {
+            .then(({token}) => {
                     localStorage.setItem('jwt', token)
                     setIsLoggedIn(true)
                 }
@@ -126,12 +128,12 @@ function App() {
                 setMessage("Данные успешно сохранены");
             })
             .catch(err => {
-            if (err.status === 409) {
-                setMessage("Пользователь с таким email уже существует");
-            } else {
-                setMessage("При регистрации пользователя произошла ошибка");
-            }
-        })
+                if (err.status === 409) {
+                    setMessage("Пользователь с таким email уже существует");
+                } else {
+                    setMessage("При регистрации пользователя произошла ошибка");
+                }
+            })
     }
 
     const onLogout = () => {
@@ -139,17 +141,21 @@ function App() {
         setSavedMoviesFiltered([])
         setAllMoviesFiltered([])
         setSavedMoviesArray([])
+        setAllMoviesArray([])
         setSearchPhrase('')
+        setCurrentUser({})
+        setLastState({})
         localStorage.removeItem('jwt');
-        localStorage.removeItem('movies');
+        localStorage.removeItem('allMovies');
         localStorage.removeItem('savedMovies');
         localStorage.removeItem('countShow')
+        localStorage.removeItem('lastStateMovies')
         setMessage('')
         history.push('/');
     };
 
-    function handleShortMovie() {
-        setIsShortMovie(!isShortMovie)
+    function handleShortMovie(value) {
+        setIsShortMovie(value)
     }
 
     const filteredMovies = (moviesForFiltered, phrase, isShort) => {
@@ -160,10 +166,6 @@ function App() {
 
         return filterByPhrase.filter(movie => movie.duration <= DURATION_SHORT_MOVIE)
     }
-
-    useEffect(() => {
-        saveResultLastSearchMoviesLocalStorage(searchPhrase, isShortMovie)
-    }, [isShortMovie])
 
     const getAllMovies = async () => {
         setMessage('')
@@ -187,35 +189,16 @@ function App() {
             localStorage.removeItem('savedMovies')
 
             const savedMovies = await apiMain.getSavedMovies(localStorage.getItem('jwt'))
-            await localStorage.setItem('savedMovies', JSON.stringify(savedMovies))
-            setSavedMoviesArray(JSON.parse(localStorage.getItem('savedMovies')))
+            setSavedMoviesArray(savedMovies)
 
         } catch (error) {
             console.log(error)
         }
     }
 
-
-    const saveResultLastSearchMoviesLocalStorage = async (searchPhrase, isShortMovie) => {
-        console.log(isShortMovie, searchPhrase)
-
-        const filteredMoviesResult = await filteredMovies(allMoviesArray, searchPhrase, isShortMovie)
-
-        const resultLastSearch = {
-            'searchPhrase': searchPhrase,
-            'isShortMovie': isShortMovie,
-            'movies': filteredMoviesResult
-        }
-
-        setAllMoviesFiltered(resultLastSearch)
-        await localStorage.setItem('movies', JSON.stringify(resultLastSearch))
-    }
-
-
     useEffect(() => {
         if (!!currentUser.email) {
             try {
-                getAllMovies()
                 getSavedMovies()
             } catch (error) {
                 console.log(error)
@@ -225,26 +208,9 @@ function App() {
     }, [currentUser])
 
     const likeMovie = async (movieData) => {
-
         try {
-            await apiMain.likedMovie({...movieData}, localStorage.getItem('jwt'))
-            await getSavedMovies()
-
-            const savedMovies = JSON.parse(localStorage.getItem('savedMovies'))
-
-            setSavedMoviesFiltered(savedMovies)
-
-            const idSavedMovies = Object.values(savedMovies).map(savedMovie => savedMovie.movieId)
-            console.log(allMoviesFiltered, idSavedMovies)
-
-            const resultLastSearch = {
-                'searchPhrase': allMoviesFiltered.searchPhrase,
-                'isShortMovie': allMoviesFiltered.isShortMovie,
-                'movies': allMoviesFiltered.movies
-            }
-            setAllMoviesFiltered(resultLastSearch)
-            await localStorage.setItem('movies', JSON.stringify(resultLastSearch))
-
+            const likedMovie = await apiMain.likedMovie({...movieData}, localStorage.getItem('jwt'))
+            setSavedMoviesArray([...savedMoviesArray, likedMovie])
         } catch (error) {
             console.log(error)
         }
@@ -252,49 +218,62 @@ function App() {
 
     const deleteMovieFromSave = async (idCard) => {
         try {
-            await apiMain.deleteMovie(idCard, localStorage.getItem('jwt'))
-            await getSavedMovies()
-            const savedMovies = JSON.parse(localStorage.getItem('savedMovies'))
-            const idSavedMovies = Object.values(savedMovies).map(savedMovie => savedMovie.movieId)
-
-            const filteredMovies = Object.values(savedMoviesFiltered).filter(savedMovie => {
-                if (idSavedMovies.includes(savedMovie.movieId)) {
-                    return savedMovie
+            const info = await apiMain.deleteMovie(idCard, localStorage.getItem('jwt'))
+            const newSavedArrayMovies = savedMoviesArray.filter(movie => {
+                if (idCard !== movie._id) {
+                    return movie
                 }
             })
 
-            setSavedMoviesFiltered(filteredMovies)
+            const newSavedArrayFiltered = savedMoviesFiltered.filter(movie => {
+                if (idCard !== movie._id) {
+                    return movie
+                }
+            })
+
+            setSavedMoviesFiltered(newSavedArrayFiltered)
+            setSavedMoviesArray(newSavedArrayMovies)
         } catch (error) {
             console.log(error)
         }
     }
 
-    const handleSubmitSearchForm = async (phrase, checkbox, page) => {
-        setSearchPhrase(phrase)
-        // setIsShortMovie(checkbox)
-        // await Promise.resolve(setIsShortMovie(checkbox))
-        if (page === 'movies') {
-            localStorage.removeItem('countShow')
-            await saveResultLastSearchMoviesLocalStorage(phrase, isShortMovie)
-        } else if (page === 'saved-movies') {
-            const filteredSaveMovies = filteredMovies(savedMoviesArray, phrase, checkbox)
-            setSavedMoviesFiltered(filteredSaveMovies)
+    const handleSubmitSearchForm = async (phrase) => {
+        if (allMoviesArray.length === 0) {
+            await getAllMovies()
         }
+
+        setSearchPhrase(phrase)
     }
 
     useEffect(() => {
-        setMessage('')
+        const filteredByPhrase = filteredMovies(allMoviesArray, searchPhrase, isShortMovie)
+        setAllMoviesFiltered(filteredByPhrase)
 
-        if (!!localStorage.getItem('movies')) {
-            setAllMoviesFiltered(JSON.parse(localStorage.getItem('movies')))
-        } else {
-            setAllMoviesFiltered({
-                'searchPhrase': '',
-                'isShortMovie': false,
-                'movies': {}
-            })
+    }, [allMoviesArray, searchPhrase, isShortMovie])
+
+
+    const handleSearchFormSavedMovie = async (phrase, isChecked) => {
+        const filtered = filteredMovies(savedMoviesArray, phrase, isChecked)
+        setSavedMoviesFiltered(filtered)
+    }
+
+
+    useEffect(() => {
+        const lastStateMovies = {
+            'phrase': searchPhrase,
+            'checkbox': isShortMovie,
+            'movies': allMoviesFiltered
         }
+        if (allMoviesArray.length !== 0) {
+            localStorage.setItem('lastStateMovies', JSON.stringify(lastStateMovies))
+            setLastState(lastStateMovies)
+        }
+    }, [allMoviesFiltered])
 
+
+    useEffect(() => {
+        setMessage('')
     }, [])
 
     return (
@@ -308,31 +287,33 @@ function App() {
                         <Footer/>
                     </Route>
 
-                    <ProtectedRoute isOpenPreloader={isOpenPreloader} likedMovie={likeMovie}
-                                    handleCheckbox={handleShortMovie} checked={isShortMovie}
-                                    deleteMovie={deleteMovieFromSave}
-                                    savedMovies={savedMoviesArray}
-                                    savedIsShortMovie={setIsShortMovie}
-                                    filteredMovies={allMoviesFiltered}
-                        // savedSearchPhrase={handleSubmitSearchForm}
-                                    handleInpit={searchPhrase}
-                        // searchPhrase={searchPhrase} handleInput={setSearchPhrase}
-                                    submitSearch={handleSubmitSearchForm}
-                        // submitSearch={saveResultLastSearchMoviesLocalStorage}
-                                    onOpen={openMenu}
-                                    isLoggedIn={isLoggedIn} message={message} setMessage={setMessage}
-                                    path="/movies"
-                                    component={Movies}>
+                    <ProtectedRoute
+                        onSubmit={handleSubmitSearchForm}
+                        handleCheckBox={handleShortMovie}
+                        filteredMovies={allMoviesFiltered}
+                        savedMovies={savedMoviesArray}
+                        deleteMovie={deleteMovieFromSave}
+                        likedMovie={likeMovie}
+
+                        lastState={lastState}
+                        message={message} setMessage={setMessage}
+
+                        isLoggedIn={isLoggedIn}
+                        isOpenPreloader={isOpenPreloader}
+                        onOpen={openMenu}
+                        path="/movies" component={Movies}>
                     </ProtectedRoute>
 
-                    <ProtectedRoute isShortMovie={isShortMovie} handleCheckbox={handleShortMovie} likedMovie={likeMovie}
-                                    filteredMovies={savedMoviesFiltered} setSavedMovies={setSavedMoviesFiltered}
-                                    component={SavedMovies} savedMovies={savedMoviesArray}
-                                    message={message} setMessage={setMessage}
-                                    isLoggedIn={isLoggedIn} path="/saved-movies"
-                        // searchPhrase={searchPhrase} handleInput={setSearchPhrase}
-                                    onSubmitSearchForm={handleSubmitSearchForm}
-                                    onOpen={openMenu} page={'saved-movies'} deleteMovie={deleteMovieFromSave}>
+                    <ProtectedRoute
+                        filteredMovies={savedMoviesFiltered}
+                        handleSearchForm={handleSearchFormSavedMovie}
+                        savedMovies={savedMoviesArray}
+                        message={message} setMessage={setMessage}
+                        setSavedMovies={setSavedMoviesFiltered}
+                        deleteMovie={deleteMovieFromSave}
+                        onSubmitSearchForm={handleSubmitSearchForm} isLoggedIn={isLoggedIn}
+                        path="/saved-movies" onOpen={openMenu} component={SavedMovies}
+                    >
                     </ProtectedRoute>
 
                     <ProtectedRoute component={Profile} path="/profile" onOpen={openMenu} isLoggedIn={isLoggedIn}
@@ -352,7 +333,7 @@ function App() {
                     <Route path="/signin">
                         {!isLoggedIn ?
                             <Login onLogin={onLogin} setMessage={setMessage} message={message}/>
-                        :
+                            :
                             <Redirect to="/profile"/>
                         }
                     </Route>

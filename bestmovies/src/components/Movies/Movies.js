@@ -13,11 +13,6 @@ function Movies(props) {
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
     const [messageError, setMessageError] = useState('');
 
-
-    // function handleInputChange(e) {
-    //     props.handleInput(e.target.value)
-    // }
-
     function getCurrentDeviceScheme(windowWidth) {
         if (windowWidth > 1279) {
             return LOADED_MOVIES.desktop
@@ -44,44 +39,24 @@ function Movies(props) {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // useEffect(() => {
-    //
-    // }, []);
-
-    useEffect(() => {
-        if(!!props.filteredMovies.movies){
-            if (props.filteredMovies.movies.length === 0) {
-                setMessageError('Ничего не найдено!')
-            }
-        }
-
-    }, [])
-
-    // console.log(props.filteredMovies.movies.length)
-
     return (
         <>
             <Header onOpen={props.onOpen} isLoggedIn={props.isLoggedIn} page={props.page}/>
             <main>
-                <SearchForm onSubmit={props.submitSearch}
-                    // savedSearchPhrase={props.savedSearchPhrase}
-                            inputChange={props.handleInput} value={props.searchPhrase}
-                            currentPage='movies'
-                            phraseFromLS={props.filteredMovies.searchPhrase}
-                            // checked={props.filteredMovies.isShortMovie}
-                            checked={props.checked}
-                            handleCheckBox={props.handleCheckbox}
-
-                    savedIsShortMovie={props.savedIsShortMovie}
+                <SearchForm
+                    onSubmit={props.onSubmit} handleCheckBox={props.handleCheckBox}
+                    checkbox={props.lastState.checkbox} phrase={props.lastState.phrase}
                 />
 
                 {!props.isOpenPreloader ?
-                    !!props.filteredMovies.movies && props.filteredMovies.movies.length > 0 ?
-                        <MoviesCardList savedMovies={props.savedMovies} deleteMovie={props.deleteMovie}
-                                        filteredMovies={props.filteredMovies.movies} size={windowDimensions}
-                                        page='movies'
+                    !!props.lastState.movies && props.lastState.movies.length > 0 ?
+                        <MoviesCardList
+                                        filteredMovies={props.lastState.movies}
+                                        savedMovies={props.savedMovies}
+
+                                        page='movies' size={windowDimensions}
                                         schemeDevice={getCurrentDeviceScheme(windowDimensions.width)}
-                                        likedMovie={props.likedMovie}/>
+                                        likedMovie={props.likedMovie} deleteMovie={props.deleteMovie} />
                         : <div className={'movies__div-error'}>{messageError}</div>
                     :
                     <Preloader isOpen={props.isOpenPreloader}/>

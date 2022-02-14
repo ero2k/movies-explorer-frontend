@@ -2,8 +2,6 @@ import React from "react";
 import "./MoviesCard.css"
 
 const Card = (props) => {
-    // console.log(props.card)
-
     const minutes = props.card.duration % 60;
     const hours = (props.card.duration - minutes) / 60; // время в минутах
     const time = `${hours < 10 ? '0' + hours : hours}ч ${minutes < 10 ? '0' + minutes : minutes}м`

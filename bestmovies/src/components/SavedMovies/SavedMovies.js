@@ -8,22 +8,12 @@ import {DURATION_SHORT_MOVIE} from "../../utils/constants";
 
 function SavedMovies(props) {
     const [isChecked, setIsChecked] = useState(false)
-    const [moviesFiltered, setMoviesFiltered] = useState([])
+    const [searchPhrase, setSearchPhrase] = useState('')
 
-    console.log(props.filteredMovies)
+    useEffect(() => {
+            props.handleSearchForm(searchPhrase, isChecked)
+    }, [isChecked, searchPhrase])
 
-    useEffect(()=>{
-        if(isChecked){
-            setMoviesFiltered(props.filteredMovies.filter(movie => movie.duration <= DURATION_SHORT_MOVIE))
-        } else {
-            setMoviesFiltered(props.filteredMovies)
-        }
-
-    },[isChecked])
-
-    function handleInputChange(e) {
-        props.handleInput(e.target.value)
-    }
 
     useEffect(() => {
         props.setSavedMovies(props.savedMovies)
@@ -35,19 +25,19 @@ function SavedMovies(props) {
             <Header onOpen={props.onOpen} isLoggedIn={props.isLoggedIn} page={props.page}/>
             <main>
 
-                <SearchForm onSubmit={props.onSubmitSearchForm} onChange={handleInputChange}
-                            value={props.searchPhrase} currentPage='saved-movies'
-                            checked={false} onChangeChecked={props.handleCheckbox}
-                            savedIsShortMovie={setIsChecked}
+                <SearchForm
+                    onSubmit={setSearchPhrase} handleCheckBox={setIsChecked}
+                    checkbox={false}
+                    phrase={''}
                 />
                 {
-                    moviesFiltered.length > 0 ?
+                    props.filteredMovies.length > 0 ?
                         <MoviesCardList deleteMovie={props.deleteMovie} likedMovie={props.likedMovie} isLiked={true}
-                                        filteredMovies={moviesFiltered} savedMovies={moviesFiltered}
-                                        schemeDevice={{'totalCards': moviesFiltered.length}}
+                                        filteredMovies={props.filteredMovies} savedMovies={props.savedMovies}
+                                        schemeDevice={{'totalCards': props.filteredMovies.length}}
                         />
                         :
-                        <div className={'movies__div-error'}>Ничего не найдено</div>
+                        <div className={'movies__div-error'}>Вы еще ничего не сохранили!</div>
 
                 }
 
