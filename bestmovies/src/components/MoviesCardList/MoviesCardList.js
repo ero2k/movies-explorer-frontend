@@ -4,7 +4,9 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 import {useEffect, useState} from "react";
 
 function MoviesCardList(props) {
-    const [countMovieToShow, setCountMovieToShow] = useState(localStorage.getItem('countShow') || props.schemeDevice.totalCards)
+    // const [countMovieToShow, setCountMovieToShow] = useState((localStorage.getItem('countShow') || props.schemeDevice.totalCards))
+    const [countMovieToShow, setCountMovieToShow] = useState(props.schemeDevice.totalCards)
+
     const [moviesToShow, setMoviesToShow] = useState(Object.values(props.filteredMovies).slice(0, countMovieToShow))
     const [buttonMoreStyle, setButtonMoreStyle] = useState('')
 
@@ -44,9 +46,11 @@ function MoviesCardList(props) {
         setCountMovieToShow(moviesToShow.length + props.schemeDevice.download)
     }
 
-    // useEffect(() => {
-    //     localStorage.setItem('countShow', countMovieToShow)
-    // },[])
+    useEffect(() => {
+       if(localStorage.setItem('countShow', countMovieToShow) < countMovieToShow){
+           setCountMovieToShow(localStorage.setItem('countShow', countMovieToShow))
+       }
+    },[])
 
 
     return (
