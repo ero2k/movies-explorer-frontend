@@ -274,7 +274,19 @@ function App() {
 
     useEffect(() => {
         setMessage('')
+        if(!lastState.movies){
+            try{
+                getSavedMovies()
+                setAllMoviesArray(JSON.parse(localStorage.getItem('allMovies')))
+                const lastState = JSON.parse(localStorage.getItem('lastStateMovies'))
+                setSearchPhrase(lastState.phrase)
+                setIsShortMovie(lastState.checkbox)
+            } catch (error){
+                console.log(error)
+            }
+        }
     }, [])
+
 
     return (
         <CurrentUserContext.Provider value={currentUser}>
