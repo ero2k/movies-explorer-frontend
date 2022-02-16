@@ -47,8 +47,8 @@ function MoviesCardList(props) {
     }
 
     useEffect(() => {
-       if(localStorage.setItem('countShow', countMovieToShow) < countMovieToShow){
-           setCountMovieToShow(localStorage.setItem('countShow', countMovieToShow))
+       if(localStorage.getItem('countShow') < countMovieToShow){
+           setCountMovieToShow(localStorage.getItem('countShow'))
        }
     },[])
 

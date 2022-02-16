@@ -16,7 +16,7 @@ function SavedMovies(props) {
 
 
     useEffect(() => {
-        props.setSavedMovies(props.savedMovies)
+        props.setSavedMoviesFiltered(props.savedMovies)
         // eslint-disable-next-line
     }, [props.savedMovies])
 

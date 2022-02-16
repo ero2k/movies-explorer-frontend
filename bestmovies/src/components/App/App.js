@@ -211,6 +211,8 @@ function App() {
         try {
             const likedMovie = await apiMain.likedMovie({...movieData}, localStorage.getItem('jwt'))
             setSavedMoviesArray([...savedMoviesArray, likedMovie])
+            setSavedMoviesFiltered([...savedMoviesArray, likedMovie])
+
         } catch (error) {
             console.log(error)
         }
@@ -249,7 +251,6 @@ function App() {
     useEffect(() => {
         const filteredByPhrase = filteredMovies(allMoviesArray, searchPhrase, isShortMovie)
         setAllMoviesFiltered(filteredByPhrase)
-
     }, [allMoviesArray, searchPhrase, isShortMovie])
 
 
@@ -257,6 +258,10 @@ function App() {
         const filtered = filteredMovies(savedMoviesArray, phrase, isChecked)
         setSavedMoviesFiltered(filtered)
     }
+
+    // useEffect(() => {
+    //     setSavedMoviesFiltered(savedMoviesArray)
+    // }, [savedMoviesArray])
 
 
     useEffect(() => {
@@ -271,17 +276,31 @@ function App() {
         }
     }, [allMoviesFiltered])
 
+    useEffect(() => {
+        if (isLoggedIn) {
+            getSavedMovies()
+        }
+    }, [isLoggedIn])
+
 
     useEffect(() => {
         setMessage('')
-        if(!lastState.movies){
-            try{
-                getSavedMovies()
-                setAllMoviesArray(JSON.parse(localStorage.getItem('allMovies')))
+        if (!lastState.movies) {
+            try {
+                // getSavedMovies()
+
+                if (!!localStorage.getItem('allMovies')) {
+                    setAllMoviesArray(JSON.parse(localStorage.getItem('allMovies')))
+                }
+
                 const lastState = JSON.parse(localStorage.getItem('lastStateMovies'))
+                if (!lastState) {
+                    return
+                }
                 setSearchPhrase(lastState.phrase)
                 setIsShortMovie(lastState.checkbox)
-            } catch (error){
+
+            } catch (error) {
                 console.log(error)
             }
         }
@@ -321,7 +340,7 @@ function App() {
                         handleSearchForm={handleSearchFormSavedMovie}
                         savedMovies={savedMoviesArray}
                         message={message} setMessage={setMessage}
-                        setSavedMovies={setSavedMoviesFiltered}
+                        setSavedMoviesFiltered={setSavedMoviesFiltered}
                         deleteMovie={deleteMovieFromSave}
                         onSubmitSearchForm={handleSubmitSearchForm} isLoggedIn={isLoggedIn}
                         path="/saved-movies" onOpen={openMenu} component={SavedMovies}
