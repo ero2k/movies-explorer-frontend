@@ -50,6 +50,9 @@
 .register__error-visible {
     visibility: visible;
 }
+.register__error-response{
+    bottom: calc(100% - 538px);
+}
 
 .register__btn-submit {
     width: 100%;
@@ -62,6 +65,12 @@
     font-size: 14px;
     line-height: 17px;
     font-weight: 500;
+    cursor: pointer;
+}
+
+.register__btn-disabled {
+    background-color: gray;
+    cursor: not-allowed;
 }
 
 .register__paragraph {
